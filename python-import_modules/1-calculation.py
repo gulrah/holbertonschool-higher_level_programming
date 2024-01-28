@@ -1,0 +1,12 @@
+#!/usr/bin/python3
+from calculator_1 import add, sub, mul, div
+a = 10
+b = 5
+sum_result = add(a, b)
+sub_result = sub(a, b)
+mul_result = mul(a, b)
+div_result = div(a, b)
+print("{:d} + {:d} = {:d}".format(a, b, sum_result))
+print("{:d} - {:d} = {:d}".format(a, b, sub_result))
+print("{:d} * {:d} = {:d}".format(a, b, mul_result))
+print("{:d} / {:d} = {:d}".format(a, b, div_result))
