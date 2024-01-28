@@ -9,4 +9,3 @@ if __name__ == "__main__":
         print("{} arguments:".format(len(argv) - 1))
     for x in range(1, len(argv)):
         print("{:d}: {}".format(x, argv[x]))
-                
