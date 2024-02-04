@@ -1,11 +1,7 @@
 #!/usr/bin/python3
-'''
-Square class definition
-'''
+'''Square class definition'''
 
 
-class Square():
-                '''
-    Empty square class
-    '''
-    pass
+    class Square():
+    """Empty square class"""
+        pass
