@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """5-square.py - Defines a Square class with printing method."""
+
+
 class Square:
     """A class representing a square.
 
