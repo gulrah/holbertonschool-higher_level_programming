@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """2-square.py - Defines a Square class with size validation."""
+
+
 class Square:
     """A class representing a square.
 
