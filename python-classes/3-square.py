@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """3-square.py - Defines a Square class with area calculation."""
+
+
 class Square:
     """A class representing a square.
 
