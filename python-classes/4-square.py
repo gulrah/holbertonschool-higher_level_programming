@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """4-square.py - Defines a Square class with a property for size."""
+
+
 class Square:
     """A class representing a square.
 
