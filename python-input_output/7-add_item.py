@@ -1,23 +1,31 @@
 #!/usr/bin/python3
-"""
-Adds all arguments to a Python list, and then save them to a file.
-"""
-
 import sys
-import os.path
+from os import path
+from json import dump, load
+from typing import List
 
-if __name__ == "__main__":
-    filename = "add_item.json"
+
+def save_to_json_file(my_obj: List, filename: str):
+    """Save Python object to a file in JSON format."""
+    with open(filename, mode='w', encoding='utf-8') as f:
+        dump(my_obj, f)
+
+
+def load_from_json_file(filename: str):
+    """Load Python object from a file in JSON format."""
+    if path.exists(filename):
+        with open(filename, mode='r', encoding='utf-8') as f:
+            return load(f)
+    return []
+
+
+def main():
+    filename = 'add_item.json'
     args = sys.argv[1:]
-    if os.path.exists(filename):
-        with open(filename, 'r', encoding='utf-8') as file:
-            my_list = file.read()
-            my_list = my_list.replace('\n', '').split(',')
-            my_list = [item.strip(' "') for item in my_list if item.strip()]
-    else:
-        my_list = []
-    
-    my_list.extend(args)
+    items_list = load_from_json_file(filename)
+    items_list.extend(args)
+    save_to_json_file(items_list, filename)
 
-    with open(filename, 'w', encoding='utf-8') as file:
-        file.write(','.join(['"{}"'.format(item) for item in my_list]))
+
+if __name__ == '__main__':
+    main()
