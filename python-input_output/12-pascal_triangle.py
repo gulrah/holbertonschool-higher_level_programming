@@ -1,20 +1,23 @@
 #!/usr/bin/python3
-'''
-class Student
-'''
+def pascal_triangle(n):
+    """
+    Generate Pascal's Triangle up to the nth row.
 
+    Args:
+        n (int): Number of rows to generate.
 
-class Student:
-    '''
-    class that defines a student by first_name, last_name, and age
-    '''
-    def __init__(self, first_name, last_name, age):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.age = age
+    Returns:
+        list of lists: Pascal's Triangle up to the nth row.
+    """
+    if n <= 0:
+        return []
 
-    def to_json(self, attrs=None):
-        if attrs is None:
-            return self.__dict__
-        return ({key: value for key, value in self.__dict__.items()
-                 if key in attrs})
+    triangle = [[1]]
+    for i in range(1, n):
+        row = [1]
+        for j in range(1, i):
+            row.append(triangle[i-1][j-1] + triangle[i-1][j])
+        row.append(1)
+        triangle.append(row)
+
+    return triangle
