@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+Module that defines the Student class for representing students.
+"""
+
 class Student:
     """
     Represents a student with first name, last name, and age.
