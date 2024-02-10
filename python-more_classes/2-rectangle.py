@@ -60,3 +60,6 @@ class Rectangle:
     def perimeter(self):
         """Computes the perimeter of the rectangle."""
         return 2 * (self.width + self.height)
+
+my_rectangle = Rectangle(10)
+print("{} - {} => {} / {}".format(my_rectangle.width, my_rectangle.height, my_rectangle.area(), my_rectangle.perimeter()))
