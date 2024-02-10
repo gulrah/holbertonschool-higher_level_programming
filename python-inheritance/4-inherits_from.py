@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 def inherits_from(obj, a_class):
     """
     Function to check if obj is an instance of a class
