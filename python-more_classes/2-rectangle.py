@@ -1,8 +1,4 @@
 #!/usr/bin/python3
-"""
-More classes
-"""
-
 
 class Rectangle:
     """
@@ -83,3 +79,7 @@ class Rectangle:
         Returns a string representation of the rectangle for debugging.
         """
         return f"Rectangle({self._width}, {self._height})"
+
+# Test case
+my_rectangle = Rectangle(10)
+print("{} - {} => {} / {}".format(my_rectangle.width, my_rectangle.height, my_rectangle.area(), my_rectangle.perimeter()))
