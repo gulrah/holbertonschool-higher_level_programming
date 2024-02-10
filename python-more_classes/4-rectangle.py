@@ -1,58 +1,86 @@
-#!/usr/bin/python3
-"""Defines a Rectangle class."""
-
-
 class Rectangle:
-    """Represent a rectangle."""
+    """
+    A class representing a rectangle.
 
-    def __init__(self, width=0, height=0):
-        """Initialize the rectangle.
+    Attributes:
+        width (int): The width of the rectangle.
+        height (int): The height of the rectangle.
+    """
+
+    def __init__(self, width, height):
+        """
+        Initialize the Rectangle with a given width and height.
 
         Args:
             width (int): The width of the rectangle.
             height (int): The height of the rectangle.
+
+        Raises:
+            TypeError: If width or height is not an integer.
+            ValueError: If width or height is negative.
         """
         self.width = width
         self.height = height
 
     @property
     def width(self):
-        """Retrieve the width of the rectangle."""
+        """
+        Get the width of the rectangle.
+
+        Returns:
+            int: The width of the rectangle.
+        """
         return self.__width
 
     @width.setter
     def width(self, value):
-        """Set the width of the rectangle.
+        """
+        Set the width of the rectangle.
 
         Args:
             value (int): The width of the rectangle.
+
+        Raises:
+            TypeError: If value is not an integer.
+            ValueError: If value is negative.
         """
         if not isinstance(value, int):
-            raise TypeError("width must be an integer")
-        elif value < 0:
-            raise ValueError("width must be >= 0")
+            raise TypeError("Width must be an integer")
+        if value < 0:
+            raise ValueError("Width must be non-negative")
         self.__width = value
 
     @property
     def height(self):
-        """Retrieve the height of the rectangle."""
+        """
+        Get the height of the rectangle.
+
+        Returns:
+            int: The height of the rectangle.
+        """
         return self.__height
 
     @height.setter
     def height(self, value):
-        """Set the height of the rectangle.
+        """
+        Set the height of the rectangle.
 
         Args:
             value (int): The height of the rectangle.
+
+        Raises:
+            TypeError: If value is not an integer.
+            ValueError: If value is negative.
         """
         if not isinstance(value, int):
-            raise TypeError("height must be an integer")
-        elif value < 0:
-            raise ValueError("height must be >= 0")
+            raise TypeError("Height must be an integer")
+        if value < 0:
+            raise ValueError("Height must be non-negative")
         self.__height = value
 
     def area(self):
-        """Calculate the area of the rectangle.
+        """
+        Calculate the area of the rectangle.
 
         Returns:
             int: The area of the rectangle.
@@ -60,7 +88,8 @@ class Rectangle:
         return self.width * self.height
 
     def perimeter(self):
-        """Calculate the perimeter of the rectangle.
+        """
+        Calculate the perimeter of the rectangle.
 
         Returns:
             int: The perimeter of the rectangle.
@@ -68,13 +97,69 @@ class Rectangle:
         return 2 * (self.width + self.height)
 
     def __str__(self):
-        """Return the printable representation of the rectangle."""
+        """
+        Get a string representation of the rectangle.
+
+        Returns:
+            str: A string representation of the rectangle.
+        """
         return '\n'.join(['#' * self.width] * self.height)
 
     def __repr__(self):
-        """Return the string representation of the rectangle."""
+        """
+        Get a string representation of the rectangle for debugging.
+
+        Returns:
+            str: A string representation of the rectangle.
+        """
         return "Rectangle({}, {})".format(self.width, self.height)
 
+    def __eq__(self, other):
+        """
+        Check if two rectangles are equal.
+
+        Args:
+            other (Rectangle): The other rectangle to compare.
+
+        Returns:
+            bool: True if the rectangles are equal, False otherwise.
+        """
+        if isinstance(other, Rectangle):
+            return self.width == other.width and self.height == other.height
+        return False
+
+    def __ne__(self, other):
+        """
+        Check if two rectangles are not equal.
+
+        Args:
+            other (Rectangle): The other rectangle to compare.
+
+        Returns:
+            bool: True if the rectangles are not equal, False otherwise.
+        """
+        return not self == other
+
     def __del__(self):
-        """Print a message when a Rectangle instance is deleted."""
+        """
+        Destructor method to print a message when the rectangle object is deleted.
+        """
         print("Bye rectangle...")
+
+# Test cases
+my_rectangle = Rectangle(2, 4)
+print(str(my_rectangle))
+print(repr(my_rectangle))
+
+# Additional test cases
+myrectangle = Rectangle(2, 4)
+print(myrectangle)
+
+myrectanglerep = repr(myrectangle)
+newrectangle = eval(myrectanglerep)
+print(newrectangle)
+
+newrectangle = eval(myrectanglerep)
+print(repr(newrectangle))
+
+print(myrectangle != newrectangle)
