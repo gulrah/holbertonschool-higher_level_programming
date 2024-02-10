@@ -3,6 +3,7 @@
 Module that defines the Student class for representing students.
 """
 
+
 class Student:
     """
     Represents a student with first name, last name, and age.
@@ -41,7 +42,7 @@ class Student:
             return self.__dict__
         else:
             return {
-                attr: getattr(self, attr) 
+                attr: getattr(self, attr)
                 for attr in attrs if hasattr(self, attr)
             }
 
