@@ -1,4 +1,4 @@
-# Task 1 Test - tests/1-my_list.txt
+# Doctest for MyList class
 
 # Test case 1
 # Description: Test if MyList prints sorted list
@@ -6,51 +6,13 @@
 #   - Appending unsorted integers to MyList
 # Expected Output:
 #   - Sorted list printed after calling print_sorted method
-[1, 4, 2, 3, 5]
-[1, 2, 3, 4, 5]
-
-# Test case 2
-# Description: Test if MyList prints sorted list with negative numbers
-# Input:
-#   - Appending unsorted integers (including negative numbers) to MyList
-# Expected Output:
-#   - Sorted list (including negative numbers) printed after calling print_sorted method
-[-3, 2, -5, 1, 0]
-[-5, -3, 0, 1, 2]
-
-# Test case 3
-# Description: Test if MyList prints sorted list with repeated elements
-# Input:
-#   - Appending unsorted integers (including repeated elements) to MyList
-# Expected Output:
-#   - Sorted list (including repeated elements) printed after calling print_sorted method
-[3, 2, 3, 1, 2]
-[1, 2, 2, 3, 3]
-
-# Test case 4
-# Description: Test if MyList prints sorted list with empty list
-# Input:
-#   - Appending no elements to MyList
-# Expected Output:
-#   - Empty list printed after calling print_sorted method
-[]
-[]
-
-# Test case 5
-# Description: Test if MyList prints sorted list with single element
-# Input:
-#   - Appending a single integer to MyList
-# Expected Output:
-#   - Single element list printed after calling print_sorted method
-[7]
-[7]
-
-# Test case 6
-# Description: Test if MyList prints sorted list with large integers
-# Input:
-#   - Appending large integers to MyList
-# Expected Output:
-#   - Sorted list with large integers printed after calling print_sorted method
-[10000, 1000000, 100000, 1000]
-[1000, 10000, 100000, 1000000]
-
+>>> MyList = __import__('1-my_list').MyList
+>>> my_list = MyList()
+>>> my_list.append(1)
+>>> my_list.append(4)
+>>> my_list.append(2)
+>>> my_list.append(3)
+>>> my_list.append(5)
+>>> print(my_list)
+>>> my_list.print_sorted()
+>>> print(my_list)
