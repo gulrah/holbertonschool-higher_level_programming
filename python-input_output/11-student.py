@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 class Student:
     """
     Represents a student with first name, last name, and age.
