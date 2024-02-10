@@ -1,4 +1,5 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+
 class Rectangle:
     """
     A class representing a rectangle.
@@ -146,21 +147,3 @@ class Rectangle:
         Destructor method to print a message when the rectangle object is deleted.
         """
         print("Bye rectangle...")
-
-# Test cases
-my_rectangle = Rectangle(2, 4)
-print(str(my_rectangle))
-print(repr(my_rectangle))
-
-# Additional test cases
-myrectangle = Rectangle(2, 4)
-print(myrectangle)
-
-myrectanglerep = repr(myrectangle)
-newrectangle = eval(myrectanglerep)
-print(newrectangle)
-
-newrectangle = eval(myrectanglerep)
-print(repr(newrectangle))
-
-print(myrectangle != newrectangle)
