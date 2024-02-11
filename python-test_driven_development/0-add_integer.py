@@ -1,31 +1,25 @@
 #!/usr/bin/python3
 """
-Module for adding two integers.
+This module is composed by a function that adds two numbers
 """
 
 
 def add_integer(a, b=98):
-    """
-    Adds two integers.
-
+    """ Function that adds two integer and/or float numbers
     Args:
-        a (int or float): The first integer.
-        b (int or float): The second integer (default is 98).
-
+        a: first number
+        b: second number
     Returns:
-        int: The addition of a and b.
-
+        The addition of the two given numbers
     Raises:
-        TypeError: If a or b is not an integer or float.
-        OverflowError: If the result is too large for an integer.
+        TypeError: If a or b aren't integer and/or float numbers
     """
-    if not (isinstance(a, (int, float)) and isinstance(b, (int, float))):
-        raise TypeError("a and b must be integers or floats")
 
-    result = int(a) + int(b)
+    if not isinstance(a, int) and not isinstance(a, float):
+        raise TypeError("a must be an integer")
+    if not isinstance(b, int) and not isinstance(b, float):
+        raise TypeError("b must be an integer")
 
-    # Check for integer overflow
-    if result < -(2**31) or result > (2**31 - 1):
-        raise OverflowError("Result is too large for an integer")
-
-    return result
+    a = int(a)
+    b = int(b)
+    return (a + b)
