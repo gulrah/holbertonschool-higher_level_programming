@@ -1,15 +1,12 @@
 #!/usr/bin/python3
-'''
-Class MyList
-'''
+"""My list"""
 
 
 class MyList(list):
-    '''
-    Subclass of list
-    '''
+    """Function for sorting"""
+
     def print_sorted(self):
-        '''
-        Prints a sorted list
-        '''
-        print(sorted(self))
+        """Prints the list sorted in ascending order"""
+        sorted_list = sorted(self)
+        print(sorted_list)
+        return sorted_list
