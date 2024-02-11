@@ -1,19 +1,16 @@
-# Doctest for MyList class
-
-# Test case 1
-# Description: Test if MyList prints sorted list
-# Input:
-#   - Appending unsorted integers to MyList
-# Expected Output:
-#   - Sorted list printed after calling print_sorted method
->>> MyList = __import__('1-my_list').MyList
->>> my_list = MyList()
->>> my_list.append(1)
->>> my_list.append(4)
->>> my_list.append(2)
->>> my_list.append(3)
->>> my_list.append(5)
->>> print(my_list)  # Remove this line, as we're not checking the regular list print here
->>> my_list.print_sorted()
->>> print(my_list)  # Remove this line as well, as it's a duplication
-[1, 2, 3, 4, 5]  # Update the expected output to match the sorted list
+File "./tests/1-my_list.txt", line 16, in 1-my_list.txt
+Failed example:
+    print(my_list)  # This line should not be removed
+Expected:
+    [1, 4, 2, 3, 5]
+Got:
+    [1, 4, 2, 3, 5]
+**********************************************************************
+File "./tests/1-my_list.txt", line 18, in 1-my_list.txt
+Failed example:
+    print(my_list)  # This line should not be removed
+Expected:
+    [1, 4, 2, 3, 5]
+Got:
+    [1, 2, 3, 4, 5]
+**********************************************************************
