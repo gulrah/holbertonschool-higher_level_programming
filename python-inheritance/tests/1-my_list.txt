@@ -1,35 +1,36 @@
 >>> MyList = __import__('1-my_list').MyList
 
->>> my_list = MyList()
->>> isinstance(my_list, list)
+>>> type(MyList())
+<class '1-my_list.MyList'>
+
+>>> issubclass(MyList, list)
 True
 
->>> my_list = MyList()
->>> type(my_list) == MyList
+>>> s = __import__('1-my_list').__doc__
+>>> len(s) > 1
 True
 
->>> my_list = MyList([3, 1, 4, 2])
->>> my_list.print_sorted()
-[1, 2, 3, 4]
-
->>> my_list.append(5)
->>> my_list.print_sorted()
-[1, 2, 3, 4, 5]
-
->>> my_list = MyList()
->>> my_list.print_sorted()
+>>> empty = MyList()
+>>> empty.print_sorted()
 []
 
->>> my_list = MyList([-9, -12, 1])
->>> my_list.print_sorted()
-[-12, -9, 1]
+>>> 'print_sorted' in dir(MyList)
+True
 
->>> my_list = MyList([1, 4, 7, 5, 2])
->>> my_list.print_sorted()
-[1, 2, 4, 5, 7]
->>> print(my_list)
-[1, 4, 7, 5, 2]
-
-
->>> type(MyList.__dict__['print_sorted'])
-<class 'function'>
+>>> l = MyList()
+>>> l.append(1)
+>>> l.append(2)
+>>> l.append(3)
+>>> l.append(4)
+>>> print(l)
+[1, 2, 3, 4]
+>>> l.print_sorted()
+[1, 2, 3, 4]
+>>> l.append(99)
+>>> l.append(21)
+>>> l.append(34)
+>>> l.append(-12)
+>>> print(l)
+[1, 2, 3, 4, 99, 21, 34, -12]
+>>> l.print_sorted()
+[-12, 1, 2, 3, 4, 21, 34, 99]
