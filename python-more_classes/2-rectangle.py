@@ -70,4 +70,9 @@ class Rectangle:
 
 if __name__ == "__main__":
     my_rectangle = Rectangle(10)
-    print("{} - {} => {} / {}".format(my_rectangle.width, my_rectangle.height, my_rectangle.area(), my_rectangle.perimeter()))
+    print("{} - {} => {} / {}".format(
+        my_rectangle.width,
+        my_rectangle.height,
+        my_rectangle.area(),
+        my_rectangle.perimeter()
+    ))
