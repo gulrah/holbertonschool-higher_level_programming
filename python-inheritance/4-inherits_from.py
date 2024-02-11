@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""
-Check if obj is an instance of a class inherited from the class.
+"""Check if obj is an instance of a class inherited from the class.
 """
 
 
