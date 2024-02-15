@@ -52,3 +52,20 @@ class Rectangle(Base):
     def y(self, value):
         """Setter for y."""
         self.__y = value
+
+    def area(self):
+        """Calculate the area of the rectangle."""
+        return self.width * self.height
+
+    def perimeter(self):
+        """Calculate the perimeter of the rectangle."""
+        return 2 * (self.width + self.height)
+
+    def move(self, delta_x, delta_y):
+        """Move the rectangle by updating its position."""
+        self.x += delta_x
+        self.y += delta_y
+
+    def __str__(self):
+        """Return a string representation of the rectangle."""
+        return f"Rectangle {self.id}: (x={self.x}, y={self.y}), width={self.width}, height={self.height}"
