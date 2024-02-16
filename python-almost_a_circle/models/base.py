@@ -30,7 +30,9 @@ class Base:
                 file.write("[]")
                 return
         with open(cls.__name__ + ".json", "w") as file:
-            file.write(cls.to_json_string([obj.to_dictionary() for obj in list_objs]))
+            file.write(cls.to_json_string(
+                [obj.to_dictionary() for obj in list_objs]
+            ))
 
     @staticmethod
     def from_json_string(json_string):
@@ -69,30 +71,6 @@ class Rectangle(Base):
         """Update attributes of the Rectangle."""
         if args:
             attrs = ['id', 'width', 'height', 'x', 'y']
-            for attr, value in zip(attrs, args):
-                setattr(self, attr, value)
-        else:
-            for key, value in kwargs.items():
-                setattr(self, key, value)
-
-
-class Square(Base):
-    """Square class inheriting from Base."""
-    def __init__(self, size, x=0, y=0, id=None):
-        """Initialize Square instance."""
-        super().__init__(id)
-        self.size = size
-        self.x = x
-        self.y = y
-
-    def to_dictionary(self):
-        """Return the dictionary representation of a Square."""
-        return {'id': self.id, 'size': self.size, 'x': self.x, 'y': self.y}
-
-    def update(self, *args, **kwargs):
-        """Update attributes of the Square."""
-        if args:
-            attrs = ['id', 'size', 'x', 'y']
             for attr, value in zip(attrs, args):
                 setattr(self, attr, value)
         else:
