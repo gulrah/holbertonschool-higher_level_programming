@@ -1,33 +1,55 @@
 import unittest
+import json
 from models.base import Base
+from models.rectangle import Rectangle
+from models.square import Square
+
 
 class TestBase(unittest.TestCase):
-    def test_init(self):
-        # Test of Base() for assigning automatically an ID exists
+    def test_base_automatic_id(self):
         b1 = Base()
-        self.assertEqual(b1.id, 1)
-
-        # Test of Base() for assigning automatically an ID + 1 of the previous exists
         b2 = Base()
+        self.assertEqual(b1.id, 1)
         self.assertEqual(b2.id, 2)
 
-        # Test of Base(89) saving the ID passed exists
-        b3 = Base(89)
-        self.assertEqual(b3.id, 89)
+    def test_base_automatic_id_increment(self):
+        Base._Base__nb_objects = 0
+        b1 = Base()
+        b2 = Base()
+        self.assertEqual(b1.id, 1)
+        self.assertEqual(b2.id, 2)
 
-    def test_to_json_string(self):
-        # Test of Base.to_json_string(None) exists
-        # Test of Base.to_json_string([]) exists
-        # Test of Base.to_json_string([ { 'id': 12 }]) exists
-        # Test of Base.to_json_string([ { 'id': 12 }]) returning a string exists
-        pass
+    def test_base_with_id(self):
+        b = Base(89)
+        self.assertEqual(b.id, 89)
 
-    def test_from_json_string(self):
-        # Test of Base.from_json_string(None) exists
-        # Test of Base.from_json_string("[]") exists
-        # Test of Base.from_json_string('[{ "id": 89 }]') exists
-        # Test of Base.from_json_string('[{ "id": 89 }]') returning a list exists
-        pass
+    def test_base_to_json_string(self):
+        self.assertEqual(Base.to_json_string(None), "[]")
+        self.assertEqual(Base.to_json_string([]), "[]")
+        self.assertEqual(Base.to_json_string([{'id': 12}]), '[{"id": 12}]')
+
+    def test_base_from_json_string(self):
+        self.assertEqual(Base.from_json_string(None), [])
+        self.assertEqual(Base.from_json_string("[]"), [])
+        self.assertEqual(Base.from_json_string('[{"id": 89 }]'), [{'id': 89}])
+
+
+class TestRectangle(unittest.TestCase):
+    def test_rectangle_creation(self):
+        r = Rectangle(1, 2)
+        self.assertEqual(r.width, 1)
+        self.assertEqual(r.height, 2)
+
+    # Add more test cases for Rectangle methods...
+
+
+class TestSquare(unittest.TestCase):
+    def test_square_creation(self):
+        s = Square(5)
+        self.assertEqual(s.size, 5)
+
+    # Add more test cases for Square methods...
+
 
 if __name__ == '__main__':
     unittest.main()
