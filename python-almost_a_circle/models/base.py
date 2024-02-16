@@ -29,9 +29,7 @@ class Base:
             list_objs = []
         filename = cls.__name__ + ".json"
         with open(filename, "w") as file:
-            dict_list = [obj.to_dictionary() for obj in list_objs]
-            json_string = cls.to_json_string(dict_list)
-            file.write(json_string)
+            file.write(cls.to_json_string([obj.to_dictionary() for obj in list_objs]))
 
     @staticmethod
     def from_json_string(json_string):
@@ -44,10 +42,8 @@ class Base:
     def create(cls, **dictionary):
         """Return an instance with all attributes already set."""
         if cls.__name__ == "Rectangle":
-            dummy_instance = cls(1, 1)
+            dummy_instance = cls(1, 1)  # Create a dummy Rectangle instance
         elif cls.__name__ == "Square":
-            dummy_instance = cls(1)
-        else:
-            return None
-        dummy_instance.update(**dictionary)
+            dummy_instance = cls(1)  # Create a dummy Square instance
+        dummy_instance.update(**dictionary)  # Update attributes with real values
         return dummy_instance
