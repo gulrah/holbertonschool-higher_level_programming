@@ -74,9 +74,11 @@ class Rectangle(Base):
         return self.width * self.height
 
     def display(self):
-        """Print the Rectangle instance using '#' character."""
+        """Print the Rectangle instance with '#' character and x, y offsets."""
+        for i in range(self.y):
+            print()
         for _ in range(self.height):
-            print("#" * self.width)
+            print(" " * self.x + "#" * self.width)
 
     def __str__(self):
         """Override __str__ method."""
