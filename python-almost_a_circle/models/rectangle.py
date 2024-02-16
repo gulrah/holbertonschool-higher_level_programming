@@ -84,3 +84,9 @@ class Rectangle(Base):
         """Override __str__ method."""
         return "[Rectangle] ({}) {}/{} - {}/{}".format(
             self.id, self.x, self.y, self.width, self.height)
+
+    def update(self, *args):
+        """Update the attributes of the Rectangle."""
+        attrs = ['id', 'width', 'height', 'x', 'y']
+        for i, arg in enumerate(args):
+            setattr(self, attrs[i], arg)
