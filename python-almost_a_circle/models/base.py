@@ -25,13 +25,12 @@ class Base:
     @classmethod
     def save_to_file(cls, list_objs):
         """Writes the JSON string representation of list_objs to a file."""
-        if list_objs is None:
-            list_objs = []
-        filename = cls.__name__ + ".json"
-        with open(filename, "w") as file:
-           file.write(cls.to_json_string([
-    obj.to_dictionary() for obj in list_objs
-]))
+        if list_objs is None or len(list_objs) == 0:
+            with open(cls.__name__ + ".json", "w") as file:
+                file.write("[]")
+                return
+        with open(cls.__name__ + ".json", "w") as file:
+            file.write(cls.to_json_string([obj.to_dictionary() for obj in list_objs]))
 
     @staticmethod
     def from_json_string(json_string):
@@ -77,25 +76,23 @@ class Rectangle(Base):
                 setattr(self, key, value)
 
 
-class Rectangle(Base):
-    """Rectangle class inheriting from Base."""
-    def __init__(self, width, height, x=0, y=0, id=None):
-        """Initialize Rectangle instance."""
+class Square(Base):
+    """Square class inheriting from Base."""
+    def __init__(self, size, x=0, y=0, id=None):
+        """Initialize Square instance."""
         super().__init__(id)
-        self.width = width
-        self.height = height
+        self.size = size
         self.x = x
         self.y = y
 
     def to_dictionary(self):
-        """Return the dictionary representation of a Rectangle."""
-        return {'id': self.id, 'width': self.width, 'height': self.height,
-                'x': self.x, 'y': self.y}
+        """Return the dictionary representation of a Square."""
+        return {'id': self.id, 'size': self.size, 'x': self.x, 'y': self.y}
 
     def update(self, *args, **kwargs):
-        """Update attributes of the Rectangle."""
+        """Update attributes of the Square."""
         if args:
-            attrs = ['id', 'width', 'height', 'x', 'y']
+            attrs = ['id', 'size', 'x', 'y']
             for attr, value in zip(attrs, args):
                 setattr(self, attr, value)
         else:
