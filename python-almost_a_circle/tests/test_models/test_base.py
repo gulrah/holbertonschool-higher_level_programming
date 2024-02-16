@@ -1,76 +1,96 @@
+#!/usr/bin/python3
+""" Module for test Base class """
 import unittest
-from models.base import Base, Rectangle, Square
+from models.base import Base
+from models.square import Square
+from models.rectangle import Rectangle
+from io import StringIO
+from unittest import TestCase
+from unittest.mock import patch
 
 
-class TestBase(unittest.TestCase):
-    def test_auto_assign_id(self):
-        # Test Base() for assigning automatically an ID exists
-        pass
+class TestBaseMethods(unittest.TestCase):
+    """ Suite to test Base class """
 
-    def test_auto_assign_id_plus_one(self):
-        # Test Base() for assigning automatically an ID + 1 of the previous exists
-        pass
+    def setUp(self):
+        """ Method invoked for each test """
+        Base._Base__nb_objects = 0
 
-    def test_save_passed_id(self):
-        # Test Base(89) saving the ID passed exists
-        pass
+    def test_id(self):
+        """ Test assigned id """
+        new = Base(1)
+        self.assertEqual(new.id, 1)
 
-    def test_to_json_string_none(self):
-        # Test Base.to_json_string(None) exists
-        pass
+    def test_id_default(self):
+        """ Test default id """
+        new = Base()
+        self.assertEqual(new.id, 1)
 
-    def test_to_json_string_empty_list(self):
-        # Test Base.to_json_string([]) exists
-        pass
+    def test_id_nb_objects(self):
+        """ Test nb object attribute """
+        new = Base()
+        new2 = Base()
+        new3 = Base()
+        self.assertEqual(new.id, 1)
+        self.assertEqual(new2.id, 2)
+        self.assertEqual(new3.id, 3)
 
-    def test_to_json_string_single_dict(self):
-        # Test Base.to_json_string([ { 'id': 12 }]) exists
-        pass
+    def test_id_mix(self):
+        """ Test nb object attributes and assigned id """
+        new = Base()
+        new2 = Base(1024)
+        new3 = Base()
+        self.assertEqual(new.id, 1)
+        self.assertEqual(new2.id, 1024)
+        self.assertEqual(new3.id, 2)
 
-    def test_to_json_string_returns_string(self):
-        # Test Base.to_json_string([ { 'id': 12 }]) returning a string exists
-        pass
+    def test_string_id(self):
+        """ Test string id """
+        new = Base('1')
+        self.assertEqual(new.id, '1')
 
-    def test_from_json_string_none(self):
-        # Test Base.from_json_string(None) exists
-        pass
+    def test_more_args_id(self):
+        """ Test passing more args to init method """
+        with self.assertRaises(TypeError):
+            new = Base(1, 1)
 
-    def test_from_json_string_empty_list(self):
-        # Test Base.from_json_string("[]") exists
-        pass
+    def test_access_private_attrs(self):
+        """ Test accessing to private attributes """
+        new = Base()
+        with self.assertRaises(AttributeError):
+            new.__nb_objects
 
-    def test_from_json_string_single_dict(self):
-        # Test Base.from_json_string('[{ "id": 89 }]') exists
-        pass
+    def test_save_to_file_1(self):
+        """ Test JSON file """
+        Square.save_to_file(None)
+        res = "[]\n"
+        with open("Square.json", "r") as file:
+            with patch('sys.stdout', new=StringIO()) as str_out:
+                print(file.read())
+                self.assertEqual(str_out.getvalue(), res)
 
-    def test_from_json_string_returns_list(self):
-        # Test Base.from_json_string('[{ "id": 89 }]') returning a list exists
-        pass
+        try:
+            os.remove("Square.json")
+        except:
+            pass
 
+        Square.save_to_file([])
+        with open("Square.json", "r") as file:
+            self.assertEqual(file.read(), "[]")
 
-class TestRectangle(unittest.TestCase):
-    def test_rectangle_creation(self):
-        # Test Rectangle(1, 2) exists
-        pass
+    def test_save_to_file_2(self):
+        """ Test JSON file """
+        Rectangle.save_to_file(None)
+        res = "[]\n"
+        with open("Rectangle.json", "r") as file:
+            with patch('sys.stdout', new=StringIO()) as str_out:
+                print(file.read())
+                self.assertEqual(str_out.getvalue(), res)
+        try:
+            os.remove("Rectangle.json")
+        except:
+            pass
 
-    def test_rectangle_creation_with_x_and_y(self):
-        # Test Rectangle(1, 2, 3) exists
-        pass
-
-    # Add more test methods for Rectangle with different combinations of arguments
-
-
-class TestSquare(unittest.TestCase):
-    def test_square_creation(self):
-        # Test Square(1) exists
-        pass
-
-    def test_square_creation_with_x_and_y(self):
-        # Test Square(1, 2) exists
-        pass
-
-    # Add more test methods for Square with different combinations of arguments
-
-
-if __name__ == '__main__':
-    unittest.main()
+        Rectangle.save_to_file([])
+        with open("Rectangle.json", "r") as file:
+            self.assertEqual(file.read(), "[]")
