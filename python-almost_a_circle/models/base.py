@@ -43,10 +43,6 @@ class Base:
     @classmethod
     def create(cls, **dictionary):
         """Returns an instance with all attributes already set."""
-        if cls.__name__ == "Rectangle":
-            dummy = cls(1, 1)  # Create a dummy Rectangle instance
-        elif cls.__name__ == "Square":
-            dummy = cls(1)  # Create a dummy Square instance
-        for key, value in dictionary.items():
-            setattr(dummy, key, value)  # Set attributes using setattr
-        return dummy
+        instance = cls.__new__(cls)
+        instance.__dict__.update(dictionary)
+        return instance
