@@ -47,3 +47,57 @@ class Base:
             new_instance = cls(1)  # Create a "dummy" instance
         new_instance.update(**dictionary)  # Apply the real values
         return new_instance
+
+
+class Rectangle(Base):
+    """Rectangle class inheriting from Base."""
+    def __init__(self, width, height, x=0, y=0, id=None):
+        """Initialize Rectangle instance."""
+        super().__init__(id)
+        self.width = width
+        self.height = height
+        self.x = x
+        self.y = y
+
+    def to_dictionary(self):
+        """Return the dictionary representation of a Rectangle."""
+        return {'id': self.id, 'width': self.width, 'height': self.height,
+                'x': self.x, 'y': self.y}
+
+    def update(self, *args, **kwargs):
+        """Update attributes of the Rectangle."""
+        if args:
+            attrs = ['id', 'width', 'height', 'x', 'y']
+            for attr, value in zip(attrs, args):
+                setattr(self, attr, value)
+        else:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+
+
+class Square(Rectangle):
+    """Square class inheriting from Rectangle."""
+    def __init__(self, size, x=0, y=0, id=None):
+        """Initialize Square instance."""
+        super().__init__(size, size, x, y, id)
+        self.size = size
+
+    def to_dictionary(self):
+        """Return the dictionary representation of a Square."""
+        return {'id': self.id, 'size': self.size, 'x': self.x, 'y': self.y}
+
+    def update(self, *args, **kwargs):
+        """Update attributes of the Square."""
+        if args:
+            attrs = ['id', 'size', 'x', 'y']
+            for attr, value in zip(attrs, args):
+                setattr(self, attr, value)
+                if attr == 'size':
+                    self.width = value
+                    self.height = value
+        else:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+                if key == 'size':
+                    self.width = value
+                    self.height = value
