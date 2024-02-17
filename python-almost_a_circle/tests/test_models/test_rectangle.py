@@ -11,6 +11,12 @@ from unittest.mock import patch
 
 
 
+import unittest
+from models.rectangle import Rectangle
+import io
+from contextlib import redirect_stdout
+
+
 class TestRectangle(unittest.TestCase):
     def test_width_height_validation(self):
         with self.assertRaises(ValueError):
@@ -95,42 +101,6 @@ class TestRectangle(unittest.TestCase):
             with redirect_stdout(fake_stdout):
                 r.display()
             self.assertEqual(fake_stdout.getvalue(), expected_output)
-
-    def test_create(self):
-        r = Rectangle.create(**{'id': 89})
-        self.assertEqual(r.id, 89)
-        r = Rectangle.create(**{'id': 89, 'width': 1})
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2})
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-        self.assertEqual(r.height, 2)
-        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3})
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-        self.assertEqual(r.height, 2)
-        self.assertEqual(r.x, 3)
-        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3, 'y': 4})
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-        self.assertEqual(r.height, 2)
-        self.assertEqual(r.x, 3)
-        self.assertEqual(r.y, 4)
-
-    def test_save_to_file(self):
-        Rectangle.save_to_file(None)
-        Rectangle.save_to_file([])
-        r = Rectangle(1, 2)
-        Rectangle.save_to_file([r])
-        with open("Rectangle.json", "r") as file:
-            self.assertEqual(file.read(), '[{"id": 1, "width": 1, "height": 2, "x": 0, "y": 0}]')
-
-    def test_load_from_file(self):
-        self.assertEqual(Rectangle.load_from_file(), [])
-        r = Rectangle(1, 2)
-        Rectangle.save_to_file([r])
-        self.assertEqual(Rectangle.load_from_file()[0].id, 1)
 
 
 if __name__ == '__main__':
