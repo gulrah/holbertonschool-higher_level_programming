@@ -1,59 +1,97 @@
 #!/usr/bin/python3
 """Defines unittests for models/rectangle.py."""
 
-import io
-import sys
 import unittest
-import os
-from unittest.mock import patch
-from models.base import Base
 from models.rectangle import Rectangle
+import io
+from contextlib import redirect_stdout
 
 
 class TestRectangle(unittest.TestCase):
+    def test_width_height_validation(self):
+        with self.assertRaises(ValueError):
+            Rectangle(0, 1)
+        with self.assertRaises(ValueError):
+            Rectangle(1, 0)
+
+    def test_x_y_validation(self):
+        with self.assertRaises(ValueError):
+            Rectangle(1, 1, -1)
+        with self.assertRaises(ValueError):
+            Rectangle(1, 1, 0, -1)
+
     def test_area(self):
-        # Test calculation of area
-        r = Rectangle(5, 10)
-        self.assertEqual(r.area(), 50)
+        r = Rectangle(5, 5)
+        self.assertEqual(r.area(), 25)
 
-    def test_perimeter(self):
-        # Test calculation of perimeter
-        r = Rectangle(5, 10)
-        self.assertEqual(r.perimeter(), 30)
+    def test_display(self):
+        r = Rectangle(3, 2)
+        expected_output = "###\n###\n"
+        with io.StringIO() as fake_stdout:
+            with redirect_stdout(fake_stdout):
+                r.display()
+            self.assertEqual(fake_stdout.getvalue(), expected_output)
 
-    def test_scale_size(self):
-        # Test scaling size
-        r = Rectangle(5, 10)
-        r.scale_size(2)
-        self.assertEqual(r.width, 10)
-        self.assertEqual(r.height, 20)
+    def test_update(self):
+        r = Rectangle(1, 1)
+        r.update(2, 2, 2, 2, 2)
+        self.assertEqual(str(r), "[Rectangle] (2) 2/2 - 2/2")
 
-    def test_width_getter(self):
-        # Test width getter
-        r = Rectangle(5, 10)
-        self.assertEqual(r.width, 5)
+    def test_to_dictionary(self):
+        r = Rectangle(1, 2, 3, 4, 5)
+        self.assertEqual(
+            r.to_dictionary(),
+            {'id': 5, 'width': 1, 'height': 2, 'x': 3, 'y': 4}
+        )
 
-    def test_width_setter(self):
-        # Test width setter
-        r = Rectangle(5, 10)
-        r.width = 15
-        self.assertEqual(r.width, 15)
+    def test_non_integer_width(self):
+        with self.assertRaises(TypeError):
+            Rectangle(1.5, 2)
 
-    def test_height_getter(self):
-        # Test height getter
-        r = Rectangle(5, 10)
-        self.assertEqual(r.height, 10)
+    def test_non_integer_height(self):
+        with self.assertRaises(TypeError):
+            Rectangle(1, 2.5)
 
-    def test_height_setter(self):
-        # Test height setter
-        r = Rectangle(5, 10)
-        r.height = 20
-        self.assertEqual(r.height, 20)
+    def test_non_integer_x(self):
+        with self.assertRaises(TypeError):
+            Rectangle(1, 2, 3.5)
 
-    def test_str(self):
-        # Test string representation
-        r = Rectangle(5, 10)
-        self.assertEqual(str(r), "Rectangle(5, 10)")
+    def test_non_integer_y(self):
+        with self.assertRaises(TypeError):
+            Rectangle(1, 2, 3, 4.5)
+
+    def test_negative_width(self):
+        with self.assertRaises(ValueError):
+            Rectangle(-1, 2)
+
+    def test_negative_height(self):
+        with self.assertRaises(ValueError):
+            Rectangle(1, -2)
+
+    def test_zero_width(self):
+        with self.assertRaises(ValueError):
+            Rectangle(0, 2)
+
+    def test_zero_height(self):
+        with self.assertRaises(ValueError):
+            Rectangle(1, 0)
+
+    def test_negative_x(self):
+        with self.assertRaises(ValueError):
+            Rectangle(1, 2, -3)
+
+    def test_negative_y(self):
+        with self.assertRaises(ValueError):
+            Rectangle(1, 2, 3, -4)
+
+    def test_display_without_x_and_y(self):
+        r = Rectangle(3, 2, 0, 0)
+        expected_output = "###\n###\n"
+        with io.StringIO() as fake_stdout:
+            with redirect_stdout(fake_stdout):
+                r.display()
+            self.assertEqual(fake_stdout.getvalue(), expected_output)
+
 
 if __name__ == '__main__':
     unittest.main()
