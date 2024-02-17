@@ -1,15 +1,17 @@
 #!/usr/bin/python3
-"""Base Module"""
-
-import json
+"""Defines a Base class."""
 
 class Base:
-    """Base class for other shapes"""
+    """Represents a base class for other classes."""
 
     __nb_objects = 0
 
     def __init__(self, id=None):
-        """Initialize Base"""
+        """Initializes a Base instance.
+
+        Args:
+            id (int, optional): The identifier of the instance.
+        """
         if id is not None:
             self.id = id
         else:
@@ -18,25 +20,39 @@ class Base:
 
     @staticmethod
     def to_json_string(list_dictionaries):
-        """Return JSON string representation of list_dictionaries"""
-        if list_dictionaries is None or not list_dictionaries:
+        """Returns the JSON string representation of list_dictionaries."""
+        if list_dictionaries is None or len(list_dictionaries) == 0:
             return "[]"
+        import json
         return json.dumps(list_dictionaries)
 
     @classmethod
     def save_to_file(cls, list_objs):
-        """Write JSON string representation of list_objs to a file"""
+        """Writes the JSON string representation of list_objs to a file."""
         filename = cls.__name__ + ".json"
-        with open(filename, "w") as file:
+        with open(filename, mode='w', encoding='utf-8') as f:
             if list_objs is None:
-                file.write("[]")
+                f.write("[]")
             else:
-                list_dict = [obj.to_dictionary() for obj in list_objs]
-                file.write(cls.to_json_string(list_dict))
+                list_dicts = [obj.to_dictionary() for obj in list_objs]
+                f.write(cls.to_json_string(list_dicts))
 
     @staticmethod
     def from_json_string(json_string):
-        """Return list of the JSON string representation json_string"""
-        if json_string is None or not json_string:
+        """Returns the list of the JSON string representation json_string."""
+        if json_string is None or len(json_string) == 0:
             return []
+        import json
         return json.loads(json_string)
+
+    @classmethod
+    def create(cls, **dictionary):
+        """Returns an instance with all attributes already set."""
+        if cls.__name__ == "Rectangle":
+            new_instance = cls(1, 1)
+        elif cls.__name__ == "Square":
+            new_instance = cls(1)
+        else:
+            new_instance = None
+        new_instance.update(**dictionary)
+        return new_instance
