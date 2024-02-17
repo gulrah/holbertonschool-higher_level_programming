@@ -94,7 +94,7 @@ class TestRectangle(unittest.TestCase):
                 r.display()
             self.assertEqual(fake_stdout.getvalue(), expected_output)
 
-# Test display method
+
 class TestRectangle_stdout(unittest.TestCase):
     """Unittests for testing __str__ and display methods of Rectangle class."""
 
@@ -117,7 +117,6 @@ class TestRectangle_stdout(unittest.TestCase):
         sys.stdout = sys.__stdout__
         return capture
 
-        
     def test_display_width_height(self):
         r = Rectangle(2, 3, 0, 0, 0)
         capture = TestRectangle_stdout.capture_stdout(r, "display")
@@ -139,11 +138,12 @@ class TestRectangle_stdout(unittest.TestCase):
         capture = TestRectangle_stdout.capture_stdout(r, "display")
         display = "\n\n   ##\n   ##\n   ##\n   ##\n"
         self.assertEqual(display, capture.getvalue())
-        
+
     def test_display_one_arg(self):
         r = Rectangle(5, 1, 2, 4, 7)
         with self.assertRaises(TypeError):
             r.display(1)
+
 
 if __name__ == '__main__':
     unittest.main()
