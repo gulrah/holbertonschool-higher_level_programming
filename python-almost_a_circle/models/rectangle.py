@@ -1,22 +1,78 @@
 #!/usr/bin/python3
-"""Defines a Rectangle class."""
+"""Module for Base class."""
+import json
+import os
 
-from models.base import Base
+
+class Base:
+    """Base class."""
+
+    __nb_objects = 0
+
+    def __init__(self, id=None):
+        """Initialize Base class."""
+        if id is not None:
+            self.id = id
+        else:
+            type(self).__nb_objects += 1
+            self.id = type(self).__nb_objects
+
+    @staticmethod
+    def from_json_string(json_string):
+        """Return the list of the JSON string representation json_string."""
+        if json_string is None or json_string == "":
+            return []
+        return json.loads(json_string)
+
+    @classmethod
+    def create(cls, **dictionary):
+        """Return an instance with all attributes already set."""
+        if cls.__name__ == "Rectangle":
+            new_instance = cls(1, 1)
+        elif cls.__name__ == "Square":
+            new_instance = cls(1)
+        new_instance.update(**dictionary)
+        return new_instance
+
+    @classmethod
+    def load_from_file(cls):
+        """Return a list object."""
+        filename = cls.__name__ + ".json"
+        if not os.path.exists(filename):
+            return []
+        with open(filename, mode="r", encoding="utf-8") as file:
+            return [cls.create(**d) for d in cls.from_json_string(file.read())]
+
+    @classmethod
+    def save_to_file(cls, list_objs):
+        """Write the JSON string representation of list_objs to a file."""
+        filename = cls.__name__ + ".json"
+        with open(filename, mode="w", encoding="utf-8") as file:
+            if list_objs is None:
+                file.write("[]")
+            else:
+                file.write(cls.to_json_string([obj.to_dictionary() for obj in list_objs]))
+
+    @staticmethod
+    def to_json_string(list_dictionaries):
+        """Return the JSON string representation of list_dictionaries."""
+        if list_dictionaries is None or list_dictionaries == []:
+            return "[]"
+        return json.dumps(list_dictionaries)
+
+    @staticmethod
+    def to_dictionary(list_dictionaries):
+        """Return the dictionary representation of a list of dictionaries."""
+        if list_dictionaries is None or list_dictionaries == []:
+            return []
+        return [dict(obj) for obj in list_dictionaries]
 
 
 class Rectangle(Base):
-    """Represents a rectangle."""
+    """Class Rectangle that inherits from Base."""
 
     def __init__(self, width, height, x=0, y=0, id=None):
-        """Initializes a rectangle.
-
-        Args:
-            width (int): The width of the rectangle.
-            height (int): The height of the rectangle.
-            x (int, optional): The x-coordinate of the rectangle's position.
-            y (int, optional): The y-coordinate of the rectangle's position.
-            id (int, optional): The identifier of the rectangle.
-        """
+        """Initialize Rectangle class."""
         super().__init__(id)
         self.width = width
         self.height = height
@@ -25,89 +81,94 @@ class Rectangle(Base):
 
     @property
     def width(self):
-        """Gets the width of the rectangle."""
+        """Width getter."""
         return self.__width
-
-    @property
-    def height(self):
-        """Gets the height of the rectangle."""
-        return self.__height
-
-    @property
-    def x(self):
-        """Gets the x-coordinate of the rectangle's position."""
-        return self.__x
-
-    @property
-    def y(self):
-        """Gets the y-coordinate of the rectangle's position."""
-        return self.__y
 
     @width.setter
     def width(self, value):
-        """Sets the width of the rectangle."""
-        self.__validate_non_negative_int('width', value)
+        """Width setter."""
+        if not isinstance(value, int):
+            raise TypeError("width must be an integer")
+        if value <= 0:
+            raise ValueError("width must be > 0")
         self.__width = value
+
+    @property
+    def height(self):
+        """Height getter."""
+        return self.__height
 
     @height.setter
     def height(self, value):
-        """Sets the height of the rectangle."""
-        self.__validate_non_negative_int('height', value)
+        """Height setter."""
+        if not isinstance(value, int):
+            raise TypeError("height must be an integer")
+        if value <= 0:
+            raise ValueError("height must be > 0")
         self.__height = value
 
-    @x.setter
-    def x(self, value):
-        """Sets the x-coordinate of the rectangle's position."""
-        self.__validate_non_negative_int('x', value)
-        self.__x = value
-
-    @y.setter
-    def y(self, value):
-        """Sets the y-coordinate of the rectangle's position."""
-        self.__validate_non_negative_int('y', value)
-        self.__y = value
-
-    def __validate_non_negative_int(self, name, value):
-        """Validates if a value is a non-negative integer.
-
-        Args:
-            name (str): The name of the attribute.
-            value (int): The value to validate.
-
-        Raises:
-            TypeError: If the value is not an integer.
-            ValueError: If the value is negative.
-        """
-        if not isinstance(value, int):
-            raise TypeError(f"{name} must be an integer")
-        if value < 0:
-            raise ValueError(f"{name} must be >= 0")
-
     def area(self):
-        """Calculates the area of the rectangle."""
+        """Return the area value of the Rectangle instance."""
         return self.width * self.height
 
     def display(self):
-        """Displays the rectangle."""
-        for _ in range(self.y):
+        """Print in stdout the Rectangle instance with the character #."""
+        for i in range(self.y):
             print()
-        for _ in range(self.height):
+        for i in range(self.height):
             print(" " * self.x + "#" * self.width)
 
-    def __str__(self):
-        """Returns a string representation of the rectangle."""
-        return f"[Rectangle] ({self.id}) {self.x}/{self.y} - {self.width}/{self.height}"
-
     def update(self, *args, **kwargs):
-        """Updates the attributes of the rectangle."""
+        """Assign an argument to each attribute."""
         if args:
-            attrs = ['id', 'width', 'height', 'x', 'y']
+            attrs = ["id", "width", "height", "x", "y"]
             for i, arg in enumerate(args):
                 setattr(self, attrs[i], arg)
-        else:
+        elif kwargs:
             for key, value in kwargs.items():
                 setattr(self, key, value)
 
+    def __str__(self):
+        """Override the str method."""
+        return "[Rectangle] ({}) {}/{} - {}/{}".format(self.id, self.x, self.y, self.width, self.height)
+
     def to_dictionary(self):
-        """Returns the dictionary representation of the rectangle."""
-        return {'id': self.id, 'width': self.width, 'height': self.height, 'x': self.x, 'y': self.y}
+        """Return the dictionary representation of a Rectangle."""
+        return {"id": self.id, "width": self.width, "height": self.height, "x": self.x, "y": self.y}
+
+
+class Square(Rectangle):
+    """Class Square that inherits from Rectangle."""
+
+    def __init__(self, size, x=0, y=0, id=None):
+        """Initialize Square class."""
+        super().__init__(size, size, x, y, id)
+
+    @property
+    def size(self):
+        """Size getter."""
+        return self.width
+
+    @size.setter
+    def size(self, value):
+        """Size setter."""
+        self.width = value
+        self.height = value
+
+    def update(self, *args, **kwargs):
+        """Assign attributes."""
+        if args:
+            attrs = ["id", "size", "x", "y"]
+            for i, arg in enumerate(args):
+                setattr(self, attrs[i], arg)
+        elif kwargs:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+
+    def __str__(self):
+        """Override the str method."""
+        return "[Square] ({}) {}/{} - {}".format(self.id, self.x, self.y, self.width)
+
+    def to_dictionary(self):
+        """Return the dictionary representation of a Square."""
+        return {"id": self.id, "size": self.width, "x": self.x, "y": self.y}
