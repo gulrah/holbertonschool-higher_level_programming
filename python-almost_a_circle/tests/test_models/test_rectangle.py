@@ -95,13 +95,28 @@ class TestRectangle(unittest.TestCase):
             self.assertEqual(fake_stdout.getvalue(), expected_output)
 
 # Test display method
-class TestRectangleStdout(unittest.TestCase):
-    @patch('sys.stdout', new_callable=io.StringIO)
-    def test_display(self, mock_stdout):
-        r = Rectangle(4, 6)
-        r.display()
-        expected_output = "####\n####\n####\n####\n####\n####\n"
-        self.assertEqual(mock_stdout.getvalue(), expected_output)
+class TestRectangle_stdout(unittest.TestCase):
+    """Unittests for testing __str__ and display methods of Rectangle class."""
+
+    @staticmethod
+    def capture_stdout(rect, method):
+        """Captures and returns text printed to stdout.
+
+        Args:
+            rect (Rectangle): The Rectangle to print to stdout.
+            method (str): The method to run on rect.
+        Returns:
+            The text printed to stdout by calling method on sq.
+        """
+        capture = io.StringIO()
+        sys.stdout = capture
+        if method == "print":
+            print(rect)
+        else:
+            rect.display()
+        sys.stdout = sys.__stdout__
+        return capture
+
         
     def test_display_width_height(self):
         r = Rectangle(2, 3, 0, 0, 0)
