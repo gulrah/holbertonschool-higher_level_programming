@@ -1,4 +1,6 @@
 import unittest
+import io
+from unittest import mock
 from models.rectangle import Rectangle
 
 
