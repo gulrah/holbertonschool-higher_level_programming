@@ -140,7 +140,7 @@ class TestRectangle_stdout(unittest.TestCase):
         display = "\n\n   ##\n   ##\n   ##\n   ##\n"
         self.assertEqual(display, capture.getvalue())
         
-     def test_create(self):
+    def test_create(self):
         """ Test create method """
         r1 = Rectangle(3, 5, 1)
         r1_dictionary = r1.to_dictionary()
