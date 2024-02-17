@@ -2,9 +2,11 @@
 """Defines unittests for models/rectangle.py."""
 
 import unittest
+from unittest.mock import patch
 from models.rectangle import Rectangle
 import io
 from contextlib import redirect_stdout
+import sys
 
 
 class TestRectangle(unittest.TestCase):
@@ -93,6 +95,14 @@ class TestRectangle(unittest.TestCase):
             self.assertEqual(fake_stdout.getvalue(), expected_output)
 
 # Test display method
+class TestRectangleStdout(unittest.TestCase):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_display(self, mock_stdout):
+        r = Rectangle(4, 6)
+        r.display()
+        expected_output = "####\n####\n####\n####\n####\n####\n"
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+        
     def test_display_width_height(self):
         r = Rectangle(2, 3, 0, 0, 0)
         capture = TestRectangle_stdout.capture_stdout(r, "display")
