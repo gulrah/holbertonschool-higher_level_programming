@@ -1,14 +1,17 @@
 #!/usr/bin/python3
-"""Module for Base class."""
-import json
-
+"""Defines a Base class."""
 
 class Base:
-    """Base class for managing id attribute."""
+    """Represents a base class for other classes."""
+
     __nb_objects = 0
 
     def __init__(self, id=None):
-        """Initialize Base instance."""
+        """Initializes a Base instance.
+
+        Args:
+            id (int, optional): The identifier of the instance.
+        """
         if id is not None:
             self.id = id
         else:
@@ -17,62 +20,54 @@ class Base:
 
     @staticmethod
     def to_json_string(list_dictionaries):
-        """Return the JSON string representation of list_dictionaries."""
-        if not list_dictionaries:
+        """Returns the JSON string representation of list_dictionaries."""
+        if list_dictionaries is None or len(list_dictionaries) == 0:
             return "[]"
+        import json
         return json.dumps(list_dictionaries)
 
     @classmethod
     def save_to_file(cls, list_objs):
         """Writes the JSON string representation of list_objs to a file."""
-        if list_objs is None or len(list_objs) == 0:
-            with open(cls.__name__ + ".json", "w") as file:
-                file.write("[]")
-                return
-        with open(cls.__name__ + ".json", "w") as file:
-            file.write(cls.to_json_string(
-                [obj.to_dictionary() for obj in list_objs]
-            ))
+        filename = cls.__name__ + ".json"
+        with open(filename, mode='w', encoding='utf-8') as f:
+            if list_objs is None:
+                f.write("[]")
+            else:
+                list_dicts = [obj.to_dictionary() for obj in list_objs]
+                f.write(cls.to_json_string(list_dicts))
 
     @staticmethod
     def from_json_string(json_string):
-        """Return the list of dictionaries represented by json_string."""
-        if not json_string:
+        """Returns the list of the JSON string representation json_string."""
+        if json_string is None or len(json_string) == 0:
             return []
+        import json
         return json.loads(json_string)
 
     @classmethod
     def create(cls, **dictionary):
         """Returns an instance with all attributes already set."""
         if cls.__name__ == "Rectangle":
-            new_instance = cls(1, 1)  # Create a "dummy" instance
+            new_instance = cls(1, 1)
         elif cls.__name__ == "Square":
-            new_instance = cls(1)  # Create a "dummy" instance
-        new_instance.update(**dictionary)  # Apply the real values
+            new_instance = cls(1)
+        else:
+            new_instance = None
+        if dictionary:
+            new_instance.update(**dictionary)
         return new_instance
 
+    @classmethod
+    def load_from_file(cls):
+        """Returns a list of instances."""
+        try:
+            with open(cls.__name__ + ".json", mode='r', encoding='utf-8') as f:
+                json_string = f.read()
+                list_dicts = cls.from_json_string(json_string)
+                return [cls.create(**d) for d in list_dicts]
+        except FileNotFoundError:
+            return []
+        except Exception as e:
+            return []
 
-class Rectangle(Base):
-    """Rectangle class inheriting from Base."""
-    def __init__(self, width, height, x=0, y=0, id=None):
-        """Initialize Rectangle instance."""
-        super().__init__(id)
-        self.width = width
-        self.height = height
-        self.x = x
-        self.y = y
-
-    def to_dictionary(self):
-        """Return the dictionary representation of a Rectangle."""
-        return {'id': self.id, 'width': self.width, 'height': self.height,
-                'x': self.x, 'y': self.y}
-
-    def update(self, *args, **kwargs):
-        """Update attributes of the Rectangle."""
-        if args:
-            attrs = ['id', 'width', 'height', 'x', 'y']
-            for attr, value in zip(attrs, args):
-                setattr(self, attr, value)
-        else:
-            for key, value in kwargs.items():
-                setattr(self, key, value)
