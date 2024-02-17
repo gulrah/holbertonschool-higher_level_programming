@@ -10,6 +10,7 @@ import os
 from unittest.mock import patch
 
 
+
 class TestRectangle(unittest.TestCase):
     def test_width_height_validation(self):
         with self.assertRaises(ValueError):
