@@ -107,6 +107,30 @@ class Rectangle(Base):
             raise ValueError("height must be > 0")
         self.__height = value
 
+    @property
+    def x(self):
+        """X getter."""
+        return self.__x
+
+    @x.setter
+    def x(self, value):
+        """X setter."""
+        if not isinstance(value, int):
+            raise TypeError("x must be an integer")
+        self.__x = value
+
+    @property
+    def y(self):
+        """Y getter."""
+        return self.__y
+
+    @y.setter
+    def y(self, value):
+        """Y setter."""
+        if not isinstance(value, int):
+            raise TypeError("y must be an integer")
+        self.__y = value
+
     def area(self):
         """Return the area value of the Rectangle instance."""
         return self.width * self.height
