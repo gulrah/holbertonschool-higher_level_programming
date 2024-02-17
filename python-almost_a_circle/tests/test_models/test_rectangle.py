@@ -10,7 +10,6 @@ import os
 from unittest.mock import patch
 
 
-
 class TestRectangle(unittest.TestCase):
     def test_width_height_validation(self):
         with self.assertRaises(ValueError):
@@ -95,6 +94,53 @@ class TestRectangle(unittest.TestCase):
             with redirect_stdout(fake_stdout):
                 r.display()
             self.assertEqual(fake_stdout.getvalue(), expected_output)
+
+    def test_create_method_with_id(self):
+        r = Rectangle.create(**{'id': 89})
+        self.assertEqual(str(r), "[Rectangle] (89) 0/0 - 1/1")
+
+    def test_create_method_with_id_and_width(self):
+        r = Rectangle.create(**{'id': 89, 'width': 1})
+        self.assertEqual(str(r), "[Rectangle] (89) 0/0 - 1/1")
+
+    def test_create_method_with_id_width_height(self):
+        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2})
+        self.assertEqual(str(r), "[Rectangle] (89) 0/0 - 1/2")
+
+    def test_create_method_with_id_width_height_x(self):
+        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3})
+        self.assertEqual(str(r), "[Rectangle] (89) 3/0 - 1/2")
+
+    def test_create_method_with_id_width_height_x_y(self):
+        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3, 'y': 4})
+        self.assertEqual(str(r), "[Rectangle] (89) 3/4 - 1/2")
+
+    def test_save_to_file_with_none(self):
+        Rectangle.save_to_file(None)
+        self.assertTrue(os.path.exists("Rectangle.json"))
+        os.remove("Rectangle.json")
+
+    def test_save_to_file_with_empty_list(self):
+        Rectangle.save_to_file([])
+        self.assertTrue(os.path.exists("Rectangle.json"))
+        os.remove("Rectangle.json")
+
+    def test_save_to_file_with_list_of_rectangles(self):
+        r = Rectangle(1, 2)
+        Rectangle.save_to_file([r])
+        with open("Rectangle.json", "r") as file:
+            self.assertEqual(Rectangle.from_json_string(file.read()), [{"id": 1, "width": 1, "height": 2, "x": 0, "y": 0}])
+        os.remove("Rectangle.json")
+
+    def test_load_from_file_when_file_doesnt_exist(self):
+        if os.path.exists("Rectangle.json"):
+            os.remove("Rectangle.json")
+        self.assertEqual(Rectangle.load_from_file(), [])
+
+    def test_load_from_file_when_file_exists(self):
+        r = Rectangle(1, 2)
+        Rectangle.save_to_file([r])
+        self.assertEqual(Rectangle.load_from_file(), [r])
 
 
 if __name__ == '__main__':
