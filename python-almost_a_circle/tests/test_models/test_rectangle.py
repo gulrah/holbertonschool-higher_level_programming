@@ -143,6 +143,72 @@ class TestRectangle_stdout(unittest.TestCase):
         r = Rectangle(5, 1, 2, 4, 7)
         with self.assertRaises(TypeError):
             r.display(1)
+     
+    def test_create_method_exists(self):
+        self.assertTrue(hasattr(Rectangle, 'create'))
+
+    def test_save_to_file_method_exists(self):
+        self.assertTrue(hasattr(Rectangle, 'save_to_file'))
+
+    def test_load_from_file_method_exists(self):
+        self.assertTrue(hasattr(Rectangle, 'load_from_file'))
+
+    def test_create_with_id(self):
+        r = Rectangle.create(**{'id': 89})
+        self.assertEqual(r.id, 89)
+
+    def test_create_with_id_and_width(self):
+        r = Rectangle.create(**{'id': 89, 'width': 1})
+        self.assertEqual(r.id, 89)
+        self.assertEqual(r.width, 1)
+
+    def test_create_with_id_width_and_height(self):
+        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2})
+        self.assertEqual(r.id, 89)
+        self.assertEqual(r.width, 1)
+        self.assertEqual(r.height, 2)
+
+    def test_create_with_id_width_height_x(self):
+        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3})
+        self.assertEqual(r.id, 89)
+        self.assertEqual(r.width, 1)
+        self.assertEqual(r.height, 2)
+        self.assertEqual(r.x, 3)
+
+    def test_create_with_id_width_height_x_and_y(self):
+        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3, 'y': 4})
+        self.assertEqual(r.id, 89)
+        self.assertEqual(r.width, 1)
+        self.assertEqual(r.height, 2)
+        self.assertEqual(r.x, 3)
+        self.assertEqual(r.y, 4)
+
+    def test_save_to_file_none(self):
+        with self.assertRaises(TypeError):
+            Rectangle.save_to_file(None)
+
+    def test_save_to_file_empty_list(self):
+        with patch('builtins.open', create=True) as mock_open:
+            Rectangle.save_to_file([])
+            mock_open.assert_called_once_with('Rectangle.json', 'w')
+
+    def test_save_to_file_single_rectangle(self):
+        r = Rectangle(1, 2)
+        with patch('builtins.open', create=True) as mock_open:
+            Rectangle.save_to_file([r])
+            mock_open.assert_called_once_with('Rectangle.json', 'w')
+
+    def test_load_from_file_non_existent_file(self):
+        self.assertEqual(Rectangle.load_from_file(), [])
+
+    def test_load_from_file_existent_file(self):
+        with patch('builtins.open', create=True) as mock_open:
+            mock_open.return_value.read.return_value = '[{"id": 1, "width": 2, "height": 3}]'
+            rectangles = Rectangle.load_from_file()
+            self.assertEqual(len(rectangles), 1)
+            self.assertEqual(rectangles[0].id, 1)
+            self.assertEqual(rectangles[0].width, 2)
+            self.assertEqual(rectangles[0].height, 3)
 
 
 if __name__ == '__main__':
