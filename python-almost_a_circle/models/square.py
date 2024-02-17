@@ -25,6 +25,8 @@ class Square(Rectangle):
     @size.setter
     def size(self, value):
         """Sets the size of the square."""
+        if value <= 0:
+            raise ValueError("size must be > 0")
         self.width = value
         self.height = value
 
@@ -40,5 +42,6 @@ class Square(Rectangle):
 
     def to_dictionary(self):
         """Returns the dictionary representation of the square."""
-        return {'id': self.id, 'size': self.size, 'x': self.x, 'y': self.y}
+        return {'id': self.id, 'size': self.size,
+                'x': self.x, 'y': self.y}
 
