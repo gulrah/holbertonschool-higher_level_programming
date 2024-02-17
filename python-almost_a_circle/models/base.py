@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Defines a Base class."""
 
+
 class Base:
     """Represents a base class for other classes."""
 
@@ -70,4 +71,3 @@ class Base:
             return []
         except Exception as e:
             return []
-
