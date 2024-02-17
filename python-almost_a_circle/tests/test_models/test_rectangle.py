@@ -1,145 +1,145 @@
 import unittest
 from models.rectangle import Rectangle
-from models.base import Base
 import io
 from contextlib import redirect_stdout
 import os
+from unittest.mock import patch
 
 
 class TestRectangle(unittest.TestCase):
-    def test_width_height_validation(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_width_height_validation(self, mock_stdout):
         with self.assertRaises(ValueError):
             Rectangle(0, 1)
         with self.assertRaises(ValueError):
             Rectangle(1, 0)
 
-    def test_x_y_validation(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_x_y_validation(self, mock_stdout):
         with self.assertRaises(ValueError):
             Rectangle(1, 1, -1)
         with self.assertRaises(ValueError):
             Rectangle(1, 1, 0, -1)
 
-    def test_area(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_area(self, mock_stdout):
         r = Rectangle(5, 5)
         self.assertEqual(r.area(), 25)
 
-    def test_display(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_display(self, mock_stdout):
         r = Rectangle(3, 2)
         expected_output = "###\n###\n"
-        with io.StringIO() as fake_stdout:
-            with redirect_stdout(fake_stdout):
-                r.display()
-            self.assertEqual(fake_stdout.getvalue(), expected_output)
+        with redirect_stdout(mock_stdout):
+            r.display()
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
 
-    def test_update(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_update(self, mock_stdout):
         r = Rectangle(1, 1)
         r.update(2, 2, 2, 2, 2)
         self.assertEqual(str(r), "[Rectangle] (2) 2/2 - 2/2")
 
-    def test_to_dictionary(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_to_dictionary(self, mock_stdout):
         r = Rectangle(1, 2, 3, 4, 5)
         self.assertEqual(
             r.to_dictionary(),
             {'id': 5, 'width': 1, 'height': 2, 'x': 3, 'y': 4}
         )
 
-    def test_non_integer_width(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_non_integer_width(self, mock_stdout):
         with self.assertRaises(TypeError):
             Rectangle(1.5, 2)
 
-    def test_non_integer_height(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_non_integer_height(self, mock_stdout):
         with self.assertRaises(TypeError):
             Rectangle(1, 2.5)
 
-    def test_non_integer_x(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_non_integer_x(self, mock_stdout):
         with self.assertRaises(TypeError):
             Rectangle(1, 2, 3.5)
 
-    def test_non_integer_y(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_non_integer_y(self, mock_stdout):
         with self.assertRaises(TypeError):
             Rectangle(1, 2, 3, 4.5)
 
-    def test_negative_width(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_negative_width(self, mock_stdout):
         with self.assertRaises(ValueError):
             Rectangle(-1, 2)
 
-    def test_negative_height(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_negative_height(self, mock_stdout):
         with self.assertRaises(ValueError):
             Rectangle(1, -2)
 
-    def test_zero_width(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_zero_width(self, mock_stdout):
         with self.assertRaises(ValueError):
             Rectangle(0, 2)
 
-    def test_zero_height(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_zero_height(self, mock_stdout):
         with self.assertRaises(ValueError):
             Rectangle(1, 0)
 
-    def test_negative_x(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_negative_x(self, mock_stdout):
         with self.assertRaises(ValueError):
             Rectangle(1, 2, -3)
 
-    def test_negative_y(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_negative_y(self, mock_stdout):
         with self.assertRaises(ValueError):
             Rectangle(1, 2, 3, -4)
 
-    def test_display_without_x_and_y(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_display_without_x_and_y(self, mock_stdout):
         r = Rectangle(3, 2, 0, 0)
         expected_output = "###\n###\n"
-        with io.StringIO() as fake_stdout:
-            with redirect_stdout(fake_stdout):
-                r.display()
-            self.assertEqual(fake_stdout.getvalue(), expected_output)
+        with redirect_stdout(mock_stdout):
+            r.display()
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
 
-    def test_create(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_create(self, mock_stdout):
         r = Rectangle.create(**{'id': 89})
-        self.assertIsInstance(r, Rectangle)
-        self.assertEqual(r.id, 89)
-
+        self.assertEqual(str(r), "[Rectangle] (89) 0/0 - 1/1")
         r = Rectangle.create(**{'id': 89, 'width': 1})
-        self.assertIsInstance(r, Rectangle)
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-
+        self.assertEqual(str(r), "[Rectangle] (89) 0/0 - 1/1")
         r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2})
-        self.assertIsInstance(r, Rectangle)
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-        self.assertEqual(r.height, 2)
-
+        self.assertEqual(str(r), "[Rectangle] (89) 0/0 - 1/2")
         r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3})
-        self.assertIsInstance(r, Rectangle)
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-        self.assertEqual(r.height, 2)
-        self.assertEqual(r.x, 3)
-
+        self.assertEqual(str(r), "[Rectangle] (89) 3/0 - 1/2")
         r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3, 'y': 4})
-        self.assertIsInstance(r, Rectangle)
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-        self.assertEqual(r.height, 2)
-        self.assertEqual(r.x, 3)
-        self.assertEqual(r.y, 4)
+        self.assertEqual(str(r), "[Rectangle] (89) 3/4 - 1/2")
 
-    def test_save_to_file(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_save_to_file(self, mock_stdout):
         filename = "test_rectangle.json"
-        r = Rectangle(1, 2)
-        Rectangle.save_to_file([r])
-        self.assertTrue(os.path.isfile(filename))
+        Rectangle.save_to_file(None)
+        self.assertFalse(os.path.exists(filename))
+        Rectangle.save_to_file([])
+        self.assertTrue(os.path.exists(filename))
         os.remove(filename)
 
-    def test_load_from_file_nonexistent(self):
-        self.assertEqual(Rectangle.load_from_file(), [])
-
-    def test_load_from_file_existing(self):
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_load_from_file(self, mock_stdout):
         filename = "test_rectangle.json"
-        r = Rectangle(1, 2)
+        # Test when file doesn't exist
+        rectangles = Rectangle.load_from_file()
+        self.assertEqual(rectangles, [])
+        # Test when file exists
+        r = Rectangle(1, 2, 3, 4, 5)
         Rectangle.save_to_file([r])
         rectangles = Rectangle.load_from_file()
-        self.assertIsInstance(rectangles, list)
-        self.assertTrue(len(rectangles) == 1)
-        self.assertIsInstance(rectangles[0], Rectangle)
+        self.assertEqual(len(rectangles), 1)
+        self.assertEqual(rectangles[0].to_dictionary(), r.to_dictionary())
         os.remove(filename)
 
 
