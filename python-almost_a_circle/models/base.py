@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Defines a Base class."""
-
+import unittest
 
 class Base:
     """Represents a base class for other classes."""
