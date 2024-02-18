@@ -3,6 +3,7 @@
 import unittest
 from models.base import Base
 
+
 class Rectangle(Base):
     """Represents a rectangle."""
 
