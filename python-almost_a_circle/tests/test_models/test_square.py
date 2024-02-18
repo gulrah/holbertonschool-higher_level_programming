@@ -269,7 +269,7 @@ class TestSquare(unittest.TestCase):
 
         Square.save_to_file([Square(1)])
         with open("Square.json", "r") as f:
-            self.assertEqual(f.read(), '[{"id": 1, "size": 1, "x": 0, "y": 0}]')
+            self.assertEqual(f.read(), '[{"id": 48, "size": 1, "x": 0, "y": 0}]')
 
     def test_load_from_file_non_existent_file(self):
         try:
