@@ -39,6 +39,21 @@ class TestRectangle(unittest.TestCase):
         r.update(2, 2, 2, 2, 2)
         self.assertEqual(str(r), "[Rectangle] (2) 2/2 - 2/2")
 
+        r.update(89)
+        self.assertEqual(str(r), "[Rectangle] (89) 2/2 - 2/2")
+
+        r.update(89, width=1)
+        self.assertEqual(str(r), "[Rectangle] (89) 2/2 - 1/2")
+
+        r.update(89, width=1, height=2)
+        self.assertEqual(str(r), "[Rectangle] (89) 2/2 - 1/2")
+
+        r.update(89, width=1, height=2, x=3)
+        self.assertEqual(str(r), "[Rectangle] (89) 3/2 - 1/2")
+
+        r.update(89, width=1, height=2, x=3, y=4)
+        self.assertEqual(str(r), "[Rectangle] (89) 3/4 - 1/2")
+
     def test_to_dictionary(self):
         r = Rectangle(1, 2, 3, 4, 5)
         self.assertEqual(
@@ -95,6 +110,7 @@ class TestRectangle(unittest.TestCase):
             self.assertEqual(fake_stdout.getvalue(), expected_output)
 
 
+# Test display method
 class TestRectangle_stdout(unittest.TestCase):
     """Unittests for testing __str__ and display methods of Rectangle class."""
 
@@ -143,6 +159,27 @@ class TestRectangle_stdout(unittest.TestCase):
         r = Rectangle(5, 1, 2, 4, 7)
         with self.assertRaises(TypeError):
             r.display(1)
+
+    def test_create(self):
+        dictionary = {'id': 89}
+        rect = Rectangle.create(**dictionary)
+        self.assertEqual(str(rect), "[Rectangle] (89) 0/0 - 1/1")
+
+        dictionary = {'id': 89, 'width': 1}
+        rect = Rectangle.create(**dictionary)
+        self.assertEqual(str(rect), "[Rectangle] (89) 0/0 - 1/1")
+
+        dictionary = {'id': 89, 'width': 1, 'height': 2}
+        rect = Rectangle.create(**dictionary)
+        self.assertEqual(str(rect), "[Rectangle] (89) 0/0 - 1/2")
+
+        dictionary = {'id': 89, 'width': 1, 'height': 2, 'x': 3}
+        rect = Rectangle.create(**dictionary)
+        self.assertEqual(str(rect), "[Rectangle] (89) 3/0 - 1/2")
+
+        dictionary = {'id': 89, 'width': 1, 'height': 2, 'x': 3, 'y': 4}
+        rect = Rectangle.create(**dictionary)
+        self.assertEqual(str(rect), "[Rectangle] (89) 3/4 - 1/2")
 
 
 if __name__ == '__main__':
