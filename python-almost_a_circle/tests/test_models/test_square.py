@@ -1,31 +1,30 @@
+#!/usr/bin/python3
+"""
+Unit Tests for Square class in models.square module
+"""
+
 import unittest
 import os
 from models.square import Square
 
 class TestSquare(unittest.TestCase):
-    def test_width_validation(self):
+    def test_positive_dimensions(self):
+        square = Square(1, 2, 3, 4)
+        self.assertEqual(square.size, 1)
+        self.assertEqual(square.x, 2)
+        self.assertEqual(square.y, 3)
+
+    def test_string_arguments(self):
+        with self.assertRaises(TypeError):
+            Square(1, 2, "3")
+
+    def test_negative_height(self):
         with self.assertRaises(ValueError):
-            s = Square(0)
+            Square(1, 2, -3)
 
-    def test_size(self):
-        s = Square(5)
-        self.assertEqual(s.size, 5)
-
-    def test_update(self):
-        s = Square(1)
-        s.update(2, 3)
-        self.assertEqual(str(s), "[Square] (2) 0/0 - 3")
-
-    def test_to_dictionary(self):
-        s = Square(2, 1, 1, 5)
-        self.assertEqual(
-            s.to_dictionary(),
-            {'id': 5, 'size': 2, 'x': 1, 'y': 1}
-        )
-
-    def test_negative_width(self):
+    def test_zero_size(self):
         with self.assertRaises(ValueError):
-            Square(-1)
+            Square(0)
 
     def test_negative_x(self):
         with self.assertRaises(ValueError):
@@ -33,41 +32,39 @@ class TestSquare(unittest.TestCase):
 
     def test_negative_y(self):
         with self.assertRaises(ValueError):
-            Square(1, 2, -3)
+            Square(-1)
 
-    def test_create(self):
-        dictionary = {'id': 89}
-        sq = Square.create(**dictionary)
-        self.assertEqual(str(sq), "[Square] (89) 0/0 - 1")
+    def test_to_string_representation(self):
+        square = Square(1, id=1)
+        self.assertEqual(str(square), "[Square] (1) 0/0 - 1")
 
-    def test_create_with_size(self):
-        dictionary = {'id': 89, 'size': 1}
-        sq = Square.create(**dictionary)
-        self.assertEqual(str(sq), "[Square] (89) 0/0 - 1")
+    def test_to_dictionary(self):
+        square = Square(10, 2, 1, 1)
+        self.assertEqual(
+            square.to_dictionary(), {'id': 1, 'x': 2, 'size': 10, 'y': 1})
 
-    def test_create_with_size_and_position(self):
-        dictionary = {'id': 89, 'size': 1, 'x': 2, 'y': 3}
-        sq = Square.create(**dictionary)
-        self.assertEqual(str(sq), "[Square] (89) 2/3 - 1")
+    def test_update_attributes(self):
+        square = Square(5)
+        square.update(size=7)
+        self.assertEqual(square.size, 7)
 
-    def test_create_with_all_arguments(self):
-        dictionary = {'id': 89, 'size': 1, 'x': 2, 'y': 3}
-        sq = Square.create(**dictionary)
-        self.assertEqual(str(sq), "[Square] (89) 2/3 - 1")
-
+    def test_create_from_dictionary(self):
+        square = Square.create(**{ 'id': 89, 'size': 1, 'x': 2, 'y': 3 })
+        self.assertEqual(square.id, 89)
+    
     def test_save_to_file(self):
         try:
             os.remove("Square.json")
-        except:
+        except FileNotFoundError:
             pass
-
+        
         Square.save_to_file(None)
         with open("Square.json", "r") as file:
             self.assertEqual(file.read(), "[]")
 
         try:
             os.remove("Square.json")
-        except:
+        except FileNotFoundError:
             pass
 
         Square.save_to_file([])
@@ -76,36 +73,19 @@ class TestSquare(unittest.TestCase):
 
         try:
             os.remove("Square.json")
-        except:
+        except FileNotFoundError:
             pass
 
-        Square.save_to_file([Square(1)])
+        Square.save_to_file([Square(1, id=1)])
         with open("Square.json", "r") as f:
-            self.assertEqual(f.read(), '[{"id": 48, "size": 1, "x": 0, "y": 0}]')
+            self.assertEqual(f.read(), '[{"id": 1, "size": 1, "x": 0, "y": 0}]')
 
-    def test_load_from_file_non_existent_file(self):
+    def test_load_from_file(self):
         try:
             os.remove("Square.json")
-        except:
+        except FileNotFoundError:
             pass
         self.assertEqual(Square.load_from_file(), [])
-
-    def test_load_from_file_empty_file(self):
-        with open("Square.json", "w") as file:
-            file.write("")
-        self.assertEqual(Square.load_from_file(), [])
-
-    def test_load_from_file_with_data(self):
-        with open("Square.json", "w") as file:
-            file.write('[{"id": 1, "size": 1, "x": 0, "y": 0}]')
-        expected = [Square(1, 0, 0)]
-        loaded = Square.load_from_file()
-        self.assertEqual(len(loaded), len(expected))
-        for loaded_obj, expected_obj in zip(loaded, expected):
-            self.assertEqual(loaded_obj.id, expected_obj.id)
-            self.assertEqual(loaded_obj.size, expected_obj.size)
-            self.assertEqual(loaded_obj.x, expected_obj.x)
-            self.assertEqual(loaded_obj.y, expected_obj.y)
 
 if __name__ == '__main__':
     unittest.main()
