@@ -6,6 +6,8 @@ Unit Tests for Square class in models.square module
 import unittest
 import os
 from models.square import Square
+import sys
+from io import StringIO
 
 class TestSquare(unittest.TestCase):
     def test_positive_dimensions(self):

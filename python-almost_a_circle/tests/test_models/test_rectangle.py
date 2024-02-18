@@ -8,7 +8,7 @@ import io
 from contextlib import redirect_stdout
 import sys
 import os
-
+from io import StringIO
 
 class TestRectangle(unittest.TestCase):
     def test_width_height_validation(self):
