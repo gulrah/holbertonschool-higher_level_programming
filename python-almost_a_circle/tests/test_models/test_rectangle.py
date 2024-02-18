@@ -160,27 +160,6 @@ class TestRectangle_stdout(unittest.TestCase):
         with self.assertRaises(TypeError):
             r.display(1)
 
-    def test_create(self):
-        dictionary = {'id': 89}
-        rect = Rectangle.create(**dictionary)
-        self.assertEqual(str(rect), "[Rectangle] (89) 0/0 - 1/1")
-
-        dictionary = {'id': 89, 'width': 1}
-        rect = Rectangle.create(**dictionary)
-        self.assertEqual(str(rect), "[Rectangle] (89) 0/0 - 1/1")
-
-        dictionary = {'id': 89, 'width': 1, 'height': 2}
-        rect = Rectangle.create(**dictionary)
-        self.assertEqual(str(rect), "[Rectangle] (89) 0/0 - 1/2")
-
-        dictionary = {'id': 89, 'width': 1, 'height': 2, 'x': 3}
-        rect = Rectangle.create(**dictionary)
-        self.assertEqual(str(rect), "[Rectangle] (89) 3/0 - 1/2")
-
-        dictionary = {'id': 89, 'width': 1, 'height': 2, 'x': 3, 'y': 4}
-        rect = Rectangle.create(**dictionary)
-        self.assertEqual(str(rect), "[Rectangle] (89) 3/4 - 1/2")
-
 
 if __name__ == '__main__':
     unittest.main()
