@@ -87,5 +87,24 @@ class TestSquare(unittest.TestCase):
             pass
         self.assertEqual(Square.load_from_file(), [])
 
+    def test_constructor_with_two_arguments(self):
+        square = Square(1, 2)
+        self.assertEqual(square.size, 1)
+        self.assertEqual(square.x, 2)
+
+    def test_constructor_with_three_arguments(self):
+        square = Square(1, 2, 3)
+        self.assertEqual(square.size, 1)
+        self.assertEqual(square.x, 2)
+        self.assertEqual(square.y, 3)
+
+    def test_constructor_with_string_argument(self):
+        with self.assertRaises(TypeError):
+            Square("1")
+
+    def test_constructor_with_mixed_type_arguments(self):
+        with self.assertRaises(TypeError):
+            Square(1, "2")
+
 if __name__ == '__main__':
     unittest.main()
