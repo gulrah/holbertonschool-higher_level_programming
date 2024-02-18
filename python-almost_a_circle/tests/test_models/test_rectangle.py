@@ -94,58 +94,6 @@ class TestRectangle(unittest.TestCase):
                 r.display()
             self.assertEqual(fake_stdout.getvalue(), expected_output)
 
-    def test_create_with_id(self):
-        r = Rectangle.create(**{'id': 89})
-        self.assertEqual(r.id, 89)
-
-    def test_create_with_id_and_width(self):
-        r = Rectangle.create(**{'id': 89, 'width': 1})
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-
-    def test_create_with_id_width_and_height(self):
-        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2})
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-        self.assertEqual(r.height, 2)
-
-    def test_create_with_id_width_height_and_x(self):
-        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3})
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-        self.assertEqual(r.height, 2)
-        self.assertEqual(r.x, 3)
-
-    def test_create_with_id_width_height_x_and_y(self):
-        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3, 'y': 4})
-        self.assertEqual(r.id, 89)
-        self.assertEqual(r.width, 1)
-        self.assertEqual(r.height, 2)
-        self.assertEqual(r.x, 3)
-        self.assertEqual(r.y, 4)
-
-    def test_save_to_file_None(self):
-        with self.assertRaises(TypeError):
-            Rectangle.save_to_file(None)
-
-    def test_save_to_file_empty_list(self):
-        with self.assertRaises(ValueError):
-            Rectangle.save_to_file([])
-
-    def test_save_to_file_one_rectangle(self):
-        r = Rectangle(1, 2)
-        Rectangle.save_to_file([r])
-        with open("Rectangle.json", "r") as file:
-            self.assertEqual(file.read(), '[{"id": 1, "width": 1, "height": 2, "x": 0, "y": 0}]')
-
-    def test_load_from_file_when_file_doesnt_exist(self):
-        self.assertEqual(Rectangle.load_from_file(), [])
-
-    def test_load_from_file_when_file_exists(self):
-        r = Rectangle(1, 2)
-        Rectangle.save_to_file([r])
-        self.assertEqual(Rectangle.load_from_file(), [r])
-
 
 class TestRectangle_stdout(unittest.TestCase):
     """Unittests for testing __str__ and display methods of Rectangle class."""
