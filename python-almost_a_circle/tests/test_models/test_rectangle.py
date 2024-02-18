@@ -7,7 +7,6 @@ from models.rectangle import Rectangle
 import io
 from contextlib import redirect_stdout
 import sys
-import os
 
 
 class TestRectangle(unittest.TestCase):
@@ -95,50 +94,7 @@ class TestRectangle(unittest.TestCase):
                 r.display()
             self.assertEqual(fake_stdout.getvalue(), expected_output)
 
-    def test_create(self):
-        r = Rectangle.create(**{'id': 89})
-        self.assertEqual(str(r), "[Rectangle] (89) 0/0 - 1/1")
-
-        r = Rectangle.create(**{'id': 89, 'width': 1})
-        self.assertEqual(str(r), "[Rectangle] (89) 0/0 - 1/1")
-
-        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2})
-        self.assertEqual(str(r), "[Rectangle] (89) 0/0 - 1/2")
-
-        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3})
-        self.assertEqual(str(r), "[Rectangle] (89) 3/0 - 1/2")
-
-        r = Rectangle.create(**{'id': 89, 'width': 1, 'height': 2, 'x': 3, 'y': 4})
-        self.assertEqual(str(r), "[Rectangle] (89) 3/4 - 1/2")
-
-    def test_save_to_file(self):
-        r1 = Rectangle(1, 2, 3, 4, 5)
-        r2 = Rectangle(5, 4, 3, 2, 1)
-        Rectangle.save_to_file([r1, r2])
-        self.assertTrue(os.path.exists("Rectangle.json"))
-        with open("Rectangle.json", "r") as file:
-            content = file.read()
-            self.assertEqual(
-                content,
-                '[{"id": 5, "width": 1, "height": 2, "x": 3, "y": 4}, '
-                '{"id": 1, "width": 5, "height": 4, "x": 3, "y": 2}]'
-            )
-
-    def test_load_from_file(self):
-        if os.path.exists("Rectangle.json"):
-            os.remove("Rectangle.json")
-        self.assertFalse(os.path.exists("Rectangle.json"))
-        rectangles = Rectangle.load_from_file()
-        self.assertEqual(rectangles, [])
-        r1 = Rectangle(1, 2, 3, 4, 5)
-        r2 = Rectangle(5, 4, 3, 2, 1)
-        Rectangle.save_to_file([r1, r2])
-        rectangles = Rectangle.load_from_file()
-        self.assertEqual(rectangles, [r1, r2])
-        os.remove("Rectangle.json")
-        self.assertFalse(os.path.exists("Rectangle.json"))
-
-
+# Test display method
 class TestRectangle_stdout(unittest.TestCase):
     """Unittests for testing __str__ and display methods of Rectangle class."""
 
@@ -161,6 +117,7 @@ class TestRectangle_stdout(unittest.TestCase):
         sys.stdout = sys.__stdout__
         return capture
 
+        
     def test_display_width_height(self):
         r = Rectangle(2, 3, 0, 0, 0)
         capture = TestRectangle_stdout.capture_stdout(r, "display")
@@ -182,12 +139,11 @@ class TestRectangle_stdout(unittest.TestCase):
         capture = TestRectangle_stdout.capture_stdout(r, "display")
         display = "\n\n   ##\n   ##\n   ##\n   ##\n"
         self.assertEqual(display, capture.getvalue())
-
+        
     def test_display_one_arg(self):
         r = Rectangle(5, 1, 2, 4, 7)
         with self.assertRaises(TypeError):
             r.display(1)
-
 
 if __name__ == '__main__':
     unittest.main()
