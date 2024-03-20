@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 """ Module to list all states """
 
-import MySQLdb
-from sys import argv
-
 if __name__ == "__main__":
+    import MySQLdb
+    from sys import argv
+            
     try:
-        # Connecting to MySQL server
+        # Connecting to MySQL server using command-line arguments
         db = MySQLdb.connect(host="localhost", port=3306, user=argv[1], passwd=argv[2], db=argv[3])
 
         # Creating cursor object
@@ -23,8 +23,7 @@ if __name__ == "__main__":
             print(row)
         
     except MySQLdb.Error as e:
-        print("MySQL Error:", e)
-        
+        print("An error occurred:", e)
     finally:
         # Closing cursor and database connection
         if 'cursor' in locals():
