@@ -1,2 +1,2 @@
--- Script to list all records of the table second_table ordered by score
-SELECT * FROM second_table ORDER BY score DESC;
+-- Script to list all records of the table second_table of the database hbtn_0c_0 ordered by score (descending)
+SELECT score, name FROM second_table ORDER BY score DESC;
