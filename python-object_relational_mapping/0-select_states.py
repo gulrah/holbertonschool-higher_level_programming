@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """ Module to list all states """
-from sys import argv
-import MySQLdb
 
 if __name__ == "__main__":
+    import MySQLdb
+    from sys import argv
+            
     # Connecting to MySQL server
     db = MySQLdb.connect(host="localhost", port=3306, user=sys.argv[1], passwd=sys.argv[2], db=sys.argv[3])
 
