@@ -1,12 +1,26 @@
-""" Module to list all states """
+#!/usr/bin/python3
+
+"""
+This script retrieves all states from the specified database and prints them.
+"""
 
 import MySQLdb
 import sys
 
-def connect_and_print_states(mysql_username, mysql_password, database_name):
+
+def main():
     """
-    Connects to the database, retrieves states, and prints them.
+    Main function to connect to the database, retrieve states, and print them.
     """
+
+    if len(sys.argv) != 4:
+        print("Usage: ./0-select_states.py <mysql_username> <mysql_password> <database_name>")
+        sys.exit(1)
+
+    mysql_username = sys.argv[1]
+    mysql_password = sys.argv[2]
+    database_name = sys.argv[3]
+
     try:
         db = MySQLdb.connect(
             host="localhost",
@@ -32,11 +46,6 @@ def connect_and_print_states(mysql_username, mysql_password, database_name):
             cursor.close()
             db.close()
 
-# Only execute the code if the script is run directly
-if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python3 0-select_states.py <mysql_username> <mysql_password> <database_name>")
-        sys.exit(1)
 
-    # Call the function with arguments from command line
-    connect_and_print_states(sys.argv[1], sys.argv[2], sys.argv[3])
+if __name__ == "__main__":
+    main()
