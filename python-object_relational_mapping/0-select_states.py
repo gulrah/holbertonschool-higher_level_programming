@@ -1,31 +1,56 @@
 #!/usr/bin/python3
-""" Module to list all states """
 
-if __name__ == "__main__":
-                    import MySQLdb
-                        from sys import argv
+"""
+This script retrieves all states from the hbtn_0e_0_usa database and prints them.
+
+Args:
+    mysql_username: Username to connect to the MySQL server.
+    mysql_password: Password to connect to the MySQL server.
+    database_name: Name of the database to query.
+"""
+
+import MySQLdb
+
+
+def main(mysql_username, mysql_password, database_name):
+                        """
+    Connects to the MySQL server, retrieves states, and prints them.
+    """
 
                             try:
-                                                    # Connecting to MySQL server using command-line arguments
-                                                    db = MySQLdb.connect(host="localhost", port=3306, user=argv[1], passwd=argv[2], db=argv[3])
+                                                        db = MySQLdb.connect(
+                                                                                        host="localhost",
+                                                                                        port=3306,
+                                                                                        user=mysql_username,
+                                                                                        passwd=mysql_password,
+                                                                                        db=database_name,
+                                                                                    )
 
-                                                            # Creating cursor object
-                                                                    cursor = db.cursor()
+                                                                cursor = db.cursor()
 
-                                                                            # Executing SQL query
-                                                                                    cursor.execute("SELECT * FROM states ORDER BY id ASC")
+                                                                        # Retrieve states ordered by id
+                                                                                cursor.execute("SELECT * FROM states ORDER BY id ASC")
+                                                                                        states = cursor.fetchall()
 
-                                                                                            # Fetching all rows from the result set
-                                                                                                    rows = cursor.fetchall()
+                                                                                                for state in states:
+                                                                                                                                print(state)
 
-                                                                                                            # Printing results
-                                                                                                                    for row in rows:
-                                                                                                                                                print(row)
+                            except MySQLdb.Error as err:
+                                                        print(f"Error: {err}")
 
-                            except MySQLdb.Error as e:
-                                                    print("An error occurred:", e)
                             finally:
-                                                    # Closing cursor and database connection
-                                                    cursor.close()
-                                                            db.close()
-                                                            
+                                                        if db:
+                                                                                        cursor.close()
+                                                                                                    db.close()
+
+
+                                                                                                    if __name__ == "__main__":
+                                                                                                                            import sys
+
+                                                                                                                                if len(sys.argv) != 4:
+                                                                                                                                                            print("Usage: ./0-select_states.py <mysql_username> <mysql_password> <database_name>")
+                                                                                                                                                                    sys.exit(1)
+
+                                                                                                                                                                        mysql_username, mysql_password, database_name = sys.argv[1:]
+                                                                                                                                                                            main(mysql_username, mysql_password, database_name)
+                                                                                                                                                                            
