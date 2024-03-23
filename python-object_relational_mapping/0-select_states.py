@@ -1,32 +1,15 @@
 #!/usr/bin/python3
-""" Module to list all states """
+import sys
+import MySQLdb
 
 if __name__ == "__main__":
-                            import MySQLdb
-                                from sys import argv
+                                # Establish connection to MySQL database
+                                db = MySQLdb.connect(user=sys.argv[1], passwd=sys.argv[2], db=sys.argv[3])
+                                    cursor = db.cursor()
 
-                                    try:
-                                                                    # Connecting to MySQL server using command-line arguments
-                                                                    db = MySQLdb.connect(host="localhost", port=3306, user=argv[1], passwd=argv[2], db=argv[3])
+                                        # Execute SQL query
+                                            cursor.execute("SELECT * FROM `states`")
 
-                                                                            # Creating cursor object
-                                                                                    cursor = db.cursor()
-
-                                                                                            # Executing SQL query
-                                                                                                    cursor.execute("SELECT * FROM states ORDER BY id ASC")
-
-                                                                                                            # Fetching all rows from the result set
-                                                                                                                    rows = cursor.fetchall()
-
-                                                                                                                            # Printing results
-                                                                                                                                    for row in rows:
-                                                                                                                                                                        print(row)
-
-                                    except MySQLdb.Error as e:
-                                                                    print("An error occurred:", e)
-                                    finally:
-                                                                    # Closing cursor and database connection
-                                                                    if 'cursor' in locals():
-                                                                                                        cursor.close()
-                                                                                                                if 'db' in locals():
-                                                                                                                                                    db.close()
+                                                # Fetch and print results
+                                                    for state in cursor.fetchall():
+                                                                                        print(state)
