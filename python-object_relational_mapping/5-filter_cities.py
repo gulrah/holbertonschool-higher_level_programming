@@ -32,4 +32,5 @@ if __name__ == "__main__":
             if db:
                 db.close()
     else:
-        print("Usage: {} <username> <password> <database_name> <state_name>".format(sys.argv[0]))
+        print("Usage: {} <username> <password> <database_name> <state_name>"
+      .format(sys.argv[0]))
