@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Script that lists all cities of a given state from the database"""
+
 import sys
 import MySQLdb
 
@@ -33,4 +34,4 @@ if __name__ == "__main__":
                 db.close()
     else:
         print("Usage: {} <username> <password> <database_name> <state_name>"
-      .format(sys.argv[0]))
+              .format(sys.argv[0]))
