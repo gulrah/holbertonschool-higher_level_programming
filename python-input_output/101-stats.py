@@ -1,36 +1,52 @@
 #!/usr/bin/python3
 import sys
-from collections import defaultdict
 
-# Initialize variables to keep track of metrics
-total_file_size = 0
-status_counts = defaultdict(int)
+
+def print_info():
+    print('File size: {:d}'.format(file_size))
+
+    for scode, code_times in sorted(status_codes.items()):
+        if code_times > 0:
+            print('{}: {:d}'.format(scode, code_times))
+
+
+status_codes = {
+    '200': 0,
+    '301': 0,
+    '400': 0,
+    '401': 0,
+    '403': 0,
+    '404': 0,
+    '405': 0,
+    '500': 0
+}
+
+lc = 0
+file_size = 0
 
 try:
-    for i, line in enumerate(sys.stdin, 1):
+    for line in sys.stdin:
+        if lc != 0 and lc % 10 == 0:
+            print_info()
+
+        pieces = line.split()
+
         try:
-            # Split the line by spaces to extract necessary information
-            parts = line.strip().split()
-            status_code = parts[-2]
-            file_size = int(parts[-1])
-            
-            # Update metrics
-            total_file_size += file_size
-            status_counts[status_code] += 1
-            
-            # Print statistics every 10 lines
-            if i % 10 == 0:
-                print("File size: {}".format(total_file_size))
-                for code in sorted(status_counts.keys()):
-                    print("{}: {}".format(code, status_counts[code]))
-                print()
-                
-        except (IndexError, ValueError):
-            # Ignore lines that do not match the expected format
+            status = int(pieces[-2])
+
+            if str(status) in status_codes.keys():
+                status_codes[str(status)] += 1
+        except:
             pass
 
+        try:
+            file_size += int(pieces[-1])
+        except:
+            pass
+
+        lc += 1
+
+    print_info()
 except KeyboardInterrupt:
-    # Print statistics when interrupted by KeyboardInterrupt (CTRL + C)
-    print("File size: {}".format(total_file_size))
-    for code in sorted(status_counts.keys()):
-        print("{}: {}".format(code, status_counts[code]))
+    print_info()
+    raise
