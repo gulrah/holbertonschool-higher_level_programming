@@ -1,52 +1,45 @@
 #!/usr/bin/python3
 import sys
 
+"""
+Script that reads lines from standard input (stdin), computes metrics about file sizes and status codes,
+and prints them every 10 lines and after a keyboard interrupt (CTRL+C).
 
-def print_info():
-    print('File size: {:d}'.format(file_size))
+Input format:
+<IP Address> - [<date>] "GET /projects/260 HTTP/1.1" <status code> <file size>
+"""
 
-    for scode, code_times in sorted(status_codes.items()):
-        if code_times > 0:
-            print('{}: {:d}'.format(scode, code_times))
+total_size = 0
+status_counts = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
+line_count = 0
 
 
-status_codes = {
-    '200': 0,
-    '301': 0,
-    '400': 0,
-    '401': 0,
-    '403': 0,
-    '404': 0,
-    '405': 0,
-    '500': 0
-}
+def print_stats():
+  """Prints the current statistics."""
+  global total_size, status_counts
+  print(f"Total file size: {total_size}")
+  for code, count in sorted(status_counts.items()):
+    if count > 0:
+      print(f"{code}: {count}")
 
-lc = 0
-file_size = 0
 
 try:
-    for line in sys.stdin:
-        if lc != 0 and lc % 10 == 0:
-            print_info()
+  for line in sys.stdin:
+    # Extract data from the line (handle potential errors)
+    try:
+      ip, date, _, _, status_code, file_size = line.strip().split()
+      total_size += int(file_size)
+      status_counts[int(status_code)] += 1
+      line_count += 1
+    except (ValueError, IndexError):
+      print(f"Error parsing line: {line.strip()}", file=sys.stderr)
 
-        pieces = line.split()
+    # Print stats every 10 lines
+    if line_count % 10 == 0:
+      print_stats()
+      total_size = 0
+      status_counts = {code: 0 for code in status_counts}
 
-        try:
-            status = int(pieces[-2])
-
-            if str(status) in status_codes.keys():
-                status_codes[str(status)] += 1
-        except:
-            pass
-
-        try:
-            file_size += int(pieces[-1])
-        except:
-            pass
-
-        lc += 1
-
-    print_info()
+  # Print stats on keyboard interrupt
 except KeyboardInterrupt:
-    print_info()
-    raise
+  print_stats()
